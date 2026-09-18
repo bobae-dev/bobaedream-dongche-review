@@ -10,6 +10,21 @@ export const localizedCopy = {
   addCover: '대표 사진 추가'
 };
 
+export const ratingLabels = {
+  '외관': ['매우 못생김', '간신히 받아들일 만함', '특별할 것 없이 무난함', '외관이 강점', '외관의 정점'],
+  '내장': ['받아들이기 어려움', '간신히 받아들일 만함', '수수하고 꾸밈없음', '보기 좋고 만족스러움', '디자인이 완벽함'],
+  '공간': ['좁고 답답함', '공간이 제한적임', '딱 필요한 만큼임', '비교적 넉넉함', '매우 넉넉함'],
+  '옵션': ['기본 옵션도 부족함', '간단한 기본 구성', '일상에 충분함', '편안하고 만족스러움', '옵션이 매우 풍부함'],
+  '주행감': ['견디기 어려움', '다소 부족함', '무난하고 평균적임', '주행에 자신감을 줌', '차와 완벽하게 하나가 됨'],
+  '연비·전비': ['기름을 삼키는 수준', '연료를 많이 먹음', '보통 수준', '연비가 우수함', '절약적이고 효율적임']
+};
+
+export function ratingDescription(category, rating) {
+  if (!rating || !ratingLabels[category]) return '';
+  const index = Math.min(ratingLabels[category].length - 1, Math.max(0, Math.ceil(rating) - 1));
+  return ratingLabels[category][index];
+}
+
 export const brands = [
   '아우디', 'AITO 아이토', '아이안', '아바타', '아우디 AUDI', '애스턴 마틴',
   '알파 로메오', 'AIVA', '아이츠', '안카 버스', 'AUXUN 아오쉔', 'ALPINA'

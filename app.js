@@ -1,4 +1,4 @@
-import { brands, initialState, reduce, reviewCategories, starFillPercent } from './app-state.js';
+import { brands, initialState, reduce, reviewCategories, starFillPercent, ratingDescription } from './app-state.js';
 
 let state = structuredClone(initialState);
 const app = document.querySelector('#app');
@@ -21,17 +21,6 @@ function renderStars(category, index) {
     const points = '50,5 61,38 95,38 68,58 79,91 50,71 21,91 32,58 5,38 39,38';
     return `<span class="star-wrap"><svg class="star-visual" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="${id}"><rect width="${percent}" height="100" /></clipPath></defs><polygon points="${points}" fill="#e2e6ef"/><polygon points="${points}" fill="#ffc928" clip-path="url(#${id})" /></svg><button class="star-half left" aria-label="${value - 0.5}점" data-rating="${value - 0.5}" data-category="${category}"></button><button class="star-half right" aria-label="${value}점" data-rating="${value}" data-category="${category}"></button></span>`;
   }).join('')}</div>${popup ? `<div class="rating-popover">${popupValues.map((value) => `<button data-popup-rating="${value}" data-category="${category}" class="${value === rating ? 'selected' : ''}"><span class="mini-star">★</span>${value.toFixed(1)}점</button>`).join('')}</div>` : ''}</div>`;
-}
-
-function ratingDescription(rating) {
-  if (!rating) return '';
-  if (rating <= 1) return '매우 아쉬워요';
-  if (rating <= 1.5) return '아쉬운 편이에요';
-  if (rating <= 2) return '조금 아쉬워요';
-  if (rating <= 2.5) return '무난해요';
-  if (rating <= 3) return '딱 필요한 정도예요';
-  if (rating <= 4) return '만족스러워요';
-  return '정말 만족스러워요';
 }
 
 function renderModelCard() {
@@ -58,7 +47,7 @@ function renderReview() {
   return `<header class="topbar review-topbar"><button class="icon-button" data-action="noop" aria-label="닫기">×</button><strong class="brand-title">리뷰 작성</strong><span class="swap-icon">⇄</span><button class="publish">◁ 게시</button></header>
     <section class="exposure-banner"><div class="speech">300자 이상 작성하면 더 많은 사람에게 노출돼요</div><div class="progress-line"><span class="car-dot">▰</span><span></span><span class="gift">♢</span></div><div class="progress-labels"><span>리뷰 선정 기회</span><span>베스트 리뷰 선정 시 더 많은 혜택</span></div></section>
     ${renderModelCard()}
-    <section class="card rating-card"><div class="section-heading"><h2>종합 점수 ${state.model ? `<b class="overall-score">${average}점</b>` : ''}</h2><button class="help">ⓘ 점수 안내</button></div><div class="hint">점수는 어떻게 매기면 좋을까요? 한 번에 쉽게 작성해 보세요! <button aria-label="안내 닫기">×</button></div><div class="rating-list">${categories.map((category, index) => `<div class="rating-row"><label>${category}<em>*</em></label><span class="rating-description">${ratingDescription(state.ratings[category] || 0)}</span>${renderStars(category, index)}</div>`).join('')}</div></section>
+    <section class="card rating-card"><div class="section-heading"><h2>종합 점수 ${state.model ? `<b class="overall-score">${average}점</b>` : ''}</h2><button class="help">ⓘ 점수 안내</button></div><div class="hint">점수는 어떻게 매기면 좋을까요? 한 번에 쉽게 작성해 보세요! <button aria-label="안내 닫기">×</button></div><div class="rating-list">${categories.map((category, index) => `<div class="rating-row"><label>${category}<em>*</em></label><span class="rating-description">${ratingDescription(category, state.ratings[category] || 0)}</span>${renderStars(category, index)}</div>`).join('')}</div></section>
     <section class="card comment-card"><h2>한줄 리뷰 <em>*</em></h2><textarea data-action="comment" placeholder="차량의 특징과 실제 경험을 간단하게 작성해 주세요. 4.5점 이상 또는 3점 이하로 평가한 항목은 구체적인 이유를 함께 적어주시면 좋아요.">${state.comment}</textarea><div class="comment-meta"><span><b>30</b>자 이상 작성해야 게시할 수 있어요</span><button>ⓘ 리뷰 작성 가이드</button></div><div class="guide-banner">작성 가이드를 참고하면 더 좋은 리뷰를 쉽게 완성할 수 있어요! <button aria-label="안내 닫기">×</button></div></section>
     <section class="card photo-card">${selectedCover ? `<div class="cover-preview"><img src="${selectedCover.url}" alt="${selectedCover.name}"><div class="cover-status">✓ 사진 1장 선택됨</div><button class="cover-remove" data-action="remove-cover" aria-label="사진 삭제">×</button></div>` : `<button class="add-cover" data-action="open-cover-picker"><strong>＋</strong><span>대표 사진 추가</span></button>`}<input id="cover-file-input" class="visually-hidden" type="file" accept="image/*" /></section><div class="upload-error">ⓘ 차량 사진을 추가해 주세요</div>`;
 }
