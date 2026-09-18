@@ -7,7 +7,73 @@ export const localizedCopy = {
   vehicleInfo: '차량 정보',
   overallScore: '종합 점수',
   owner: '차주입니다',
-  addCover: '대표 사진 추가'
+  addCover: '대표 사진 추가',
+  navigation: ['소식', '차량 점수', '질문', '영상', '긴 글', '판매글', '차주가', '에너지']
+};
+
+export const newsCopy = {
+  imageCard: 'AI로 이미지 만들기',
+  imageCardAction: '사진을 올려 노출 늘리기',
+  titlePlaceholder: '제목을 추가하면 추천되기 쉬워요 (선택)',
+  bodyPlaceholder: '본문을 입력해 차량 구매·이용 경험과 자동차 생활을 공유해 보세요',
+  aiHelp: 'AI 도와줘',
+  shareHint: '이런 내용을 공유하면 더 인기가 많아요~',
+  shareLink: '실용적인 정보',
+  checkInTitle: '체크인 장소',
+  topicTitle: '주제 추가',
+  vehicle: 'AMG GT'
+};
+
+export const questionCopy = {
+  photoAction: '사진 추가',
+  videoAction: '영상 추가',
+  titlePlaceholder: '궁금한 점이 있나요? 빠르게 해결해 보세요!',
+  topicTitle: '주제 추가',
+  vehicle: 'AMG GT'
+};
+
+export const longPostCopy = {
+  titlePlaceholder: '제목을 추가하면 추천되기 쉬워요 (선택)',
+  bodyPlaceholder: '본문을 입력해 차량 구매·이용 경험과 자동차 생활을 공유해 보세요',
+  shareHint: '이런 내용을 공유하면 더 인기가 많아요~',
+  shareLink: '실용적인 정보',
+  topicTitle: '주제 추가',
+  vehicle: 'AMG GT',
+  bottomActions: ['표정', '사진', '가격', '정비']
+};
+
+export const saleCopy = {
+  header: '판매글',
+  publish: '게시',
+  photoHint: '사진을 한 장 이상 추가하면 게시할 수 있어요',
+  vehiclePhoto: '우수 차량 사진',
+  vehicle: '드림카 05 2024년형 프리미엄 DM-i 55KM 럭셔리형',
+  bodyPlaceholder: '차량과 함께한 이야기를 공유하면 더 많은 사람에게 노출돼요',
+  aiHelp: 'AI 도와줘',
+  clear: '초기화',
+  location: '양천구'
+};
+
+export const ownerCopy = {
+  rewardTitle: '보상 안내',
+  receiptUpload: '구매 영수증 업로드',
+  otherInfo: '기타 정보',
+  location: '구매 지역',
+  model: '브랜드·차종',
+  barePrice: '차량 가격',
+  totalPrice: '실구매 가격',
+  purchaseTime: '구매 시기',
+  note: '비고'
+};
+
+export const energyCopy = {
+  tab: '에너지',
+  notice: '차량을 선택하면 아래에 연비·전비 입력란이 자동으로 표시돼요',
+  photoAction: '에너지 사진 추가',
+  titlePlaceholder: '제목을 추가하면 추천되기 쉬워요 (선택)',
+  bodyPlaceholder: '차량의 연비·전비와 충전 경험을 공유해 주세요',
+  bindVehicle: '차량 연결',
+  vehicle: '차량 연결'
 };
 
 export const ratingLabels = {
@@ -38,7 +104,13 @@ export const initialState = {
   datePicker: { open: false, year: 2026, month: 9 },
   ratings: Object.fromEntries(categories.map((category) => [category, 0])),
   comment: '',
-  brandQuery: ''
+  brandQuery: '',
+  news: { title: '', body: '' },
+  question: { title: '', body: '' },
+  longPost: { title: '', body: '' },
+  sale: { delivery: '2024년 4월', mileage: '', color: '흰색', transfers: '0회', price: '0.00', title: '', body: '' },
+  ownerPage: { model: '', barePrice: '', totalPrice: '', purchaseTime: '', city: '양천구', note: '' },
+  energy: { title: '', body: '' }
 };
 
 export function starFillPercent(rating, starValue) {
@@ -55,6 +127,20 @@ export function reduce(state, action) {
   switch (action.type) {
     case 'OPEN_MODEL_PICKER':
       return { ...state, screen: 'brand-picker' };
+    case 'OPEN_NEWS':
+      return { ...state, screen: 'news' };
+    case 'OPEN_QUESTION':
+      return { ...state, screen: 'question' };
+    case 'OPEN_LONG_POST':
+      return { ...state, screen: 'long-post' };
+    case 'OPEN_SALE':
+      return { ...state, screen: 'sale' };
+    case 'OPEN_OWNER':
+      return { ...state, screen: 'owner' };
+    case 'OPEN_ENERGY':
+      return { ...state, screen: 'energy' };
+    case 'OPEN_REVIEW':
+      return { ...state, screen: 'review' };
     case 'OPEN_CITY_PICKER':
       return { ...state, screen: 'city-picker' };
     case 'BACK':
@@ -95,6 +181,18 @@ export function reduce(state, action) {
       return { ...state, comment: action.value };
     case 'SET_BRAND_QUERY':
       return { ...state, brandQuery: action.value };
+    case 'SET_NEWS_FIELD':
+      return { ...state, news: { ...state.news, [action.field]: action.value } };
+    case 'SET_QUESTION_FIELD':
+      return { ...state, question: { ...state.question, [action.field]: action.value } };
+    case 'SET_LONG_POST_FIELD':
+      return { ...state, longPost: { ...state.longPost, [action.field]: action.value } };
+    case 'SET_SALE_FIELD':
+      return { ...state, sale: { ...state.sale, [action.field]: action.value } };
+    case 'SET_OWNER_PAGE_FIELD':
+      return { ...state, ownerPage: { ...state.ownerPage, [action.field]: action.value } };
+    case 'SET_ENERGY_FIELD':
+      return { ...state, energy: { ...state.energy, [action.field]: action.value } };
     default:
       return state;
   }

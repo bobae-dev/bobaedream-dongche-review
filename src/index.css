@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    margin: 0;
+    background: #eef1f8;
+    color: #20222b;
+    font-family: Arial, "Noto Sans KR", "Malgun Gothic", sans-serif;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+  }
+
+  button {
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  em {
+    color: #ed6b1d;
+    font-style: normal;
+  }
+
+  /* Tailwind Preflight가 h1~h6의 font-weight를 inherit로 초기화하는데,
+     원본 CSS는 이 볼드를 브라우저 기본값에 의존하고 있었어서 복원 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: bold;
+  }
+}
+
+/* App.jsx 바깥(main.jsx/index.html)에 있는 폰 프레임 래퍼용 — 그대로 유지 */
+.phone-shell {
+  width: min(100%, 430px);
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #f4f6fb;
+  overflow: visible;
+}
+
+@media (min-width: 600px) {
+  body {
+    padding: 20px 0;
+  }
+  .phone-shell {
+    box-shadow: 0 12px 40px rgba(34, 43, 70, 0.18);
+    border-radius: 20px;
+    min-height: calc(100vh - 40px);
+  }
+}
