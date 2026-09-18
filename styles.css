@@ -1,4 +1,4 @@
-:root { color-scheme: light; font-family: Arial, "Noto Sans SC", sans-serif; background: #f2f4fa; color: #20222b; }
+:root { color-scheme: light; font-family: Arial, "Noto Sans KR", "Malgun Gothic", sans-serif; background: #f2f4fa; color: #20222b; }
 * { box-sizing: border-box; }
 body { margin: 0; background: #eef1f8; }
 .phone-shell { width: min(100%, 430px); min-height: 100vh; margin: 0 auto; background: #f4f6fb; overflow: hidden; }
@@ -52,8 +52,8 @@ em { color: #ed6b1d; font-style: normal; }
 .model-summary p { margin: 0; max-width: 275px; color: #6f7584; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .car-placeholder { font-size: 45px; }
 .owner-row { width: 100%; min-height: 64px; display: flex; align-items: center; gap: 12px; color: #9ba1b0; text-align: left; }
-.owner-row strong { color: #272a33; font-size: 22px; }
-.owner-row > span:last-child { margin-left: auto; font-size: 14px; }
+.owner-row strong { color: #272a33; font-size: 20px; white-space: nowrap; }
+.owner-row > span:last-child { flex: 1; min-width: 0; margin-left: auto; font-size: 13px; line-height: 1.35; }
 .checkbox { width: 20px; height: 20px; border: 2px solid #cfd4df; border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; }
 .checkbox.checked { background: #ffca28; border-color: #ffca28; color: #222; font-weight: 800; }
 .owner-fields { padding: 3px 0 5px; }

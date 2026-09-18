@@ -1,9 +1,18 @@
-export const categories = ['外观', '内饰', '空间', '配置', '动力操控', '油耗'];
-export const selectedCategories = ['外观', '内饰', '空间', '配置', '驾驶感受', '续航能耗'];
+export const categories = ['외관', '내장', '공간', '옵션', '주행감', '연비·전비'];
+export const selectedCategories = ['외관', '내장', '공간', '옵션', '주행감', '연비·전비'];
+
+export const localizedCopy = {
+  title: '리뷰 작성',
+  publish: '게시',
+  vehicleInfo: '차량 정보',
+  overallScore: '종합 점수',
+  owner: '차주입니다',
+  addCover: '대표 사진 추가'
+};
 
 export const brands = [
-  '奥迪', 'AITO问界', '埃安', '阿维塔', '奥迪AUDI', '阿斯顿·马丁',
-  '阿尔法·罗密欧', 'AIVA', '爱驰', '安凯客车', 'AUXUN傲旋', 'ALPINA'
+  '아우디', 'AITO 아이토', '아이안', '아바타', '아우디 AUDI', '애스턴 마틴',
+  '알파 로메오', 'AIVA', '아이츠', '안카 버스', 'AUXUN 아오쉔', 'ALPINA'
 ];
 
 export const initialState = {
@@ -60,7 +69,7 @@ export function reduce(state, action) {
         datePicker: { ...state.datePicker, open: false },
         ownerInfo: {
           ...state.ownerInfo,
-          deliveryTime: `${state.datePicker.year}年 ${state.datePicker.month}月`
+          deliveryTime: `${state.datePicker.year}년 ${state.datePicker.month}월`
         }
       };
     case 'SET_OWNER_FIELD':
