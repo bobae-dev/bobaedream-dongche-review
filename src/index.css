@@ -3,6 +3,12 @@
 @layer base {
   :root {
     color-scheme: light;
+
+    /* 앱 화면의 가로 최대 폭. 모바일 앱처럼 보이도록 이 폭으로 가둔다.
+       #root 뿐 아니라 화면 위에 떠 있는 fixed 요소들(하단 푸터, 바텀시트,
+       A~Z 인덱스 레일)도 이 값을 기준으로 정렬하므로, 폭을 바꿀 때는
+       여기 한 곳만 고치면 된다. */
+    --app-width: 520px;
   }
 
   body {
@@ -41,22 +47,13 @@
   }
 }
 
-/* App.jsx 바깥(main.jsx/index.html)에 있는 폰 프레임 래퍼용 — 그대로 유지 */
-.phone-shell {
-  width: min(100%, 430px);
+/* 앱 전체를 --app-width 폭의 가운데 기둥에 가둔다. React 가 붙는 요소가
+   #root 하나뿐이라 별도 래퍼를 두지 않고 여기에 직접 적용한다.
+   바깥 여백은 body 배경 그대로 비워 둔다. */
+#root {
+  width: min(100%, var(--app-width));
   min-height: 100vh;
   margin: 0 auto;
   background: #f4f6fb;
   overflow: visible;
-}
-
-@media (min-width: 600px) {
-  body {
-    padding: 20px 0;
-  }
-  .phone-shell {
-    box-shadow: 0 12px 40px rgba(34, 43, 70, 0.18);
-    border-radius: 20px;
-    min-height: calc(100vh - 40px);
-  }
 }

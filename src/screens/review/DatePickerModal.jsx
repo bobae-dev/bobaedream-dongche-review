@@ -18,7 +18,7 @@ function DatePickerModal({ state, dispatch }) {
   return (
     <div className="fixed inset-0 z-20 bg-[rgba(0,0,0,0.5)] flex items-end">
       <section
-        className="w-[min(100%,430px)] mx-auto bg-white rounded-t-[16px] overflow-hidden"
+        className="w-[min(100%,var(--app-width))] mx-auto bg-white rounded-t-[16px] overflow-hidden"
         role="dialog"
         aria-label="인도 시기 선택"
       >

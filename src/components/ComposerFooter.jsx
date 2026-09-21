@@ -9,7 +9,7 @@
  */
 function ComposerFooter({ vehicleLabel }) {
   return (
-    <footer className="fixed bottom-0 left-1/2 z-[4] w-[min(100%,430px)] -translate-x-1/2 bg-white shadow-[0_-2px_12px_rgba(32,39,63,0.05)]">
+    <footer className="fixed bottom-0 left-1/2 z-[4] w-[min(100%,var(--app-width))] -translate-x-1/2 bg-white shadow-[0_-2px_12px_rgba(32,39,63,0.05)]">
       <div className="h-[42px] flex items-center gap-[9px] px-[16px] text-[#20232b]">
         <span className="w-[20px] h-[20px] inline-flex items-center justify-center rounded-full bg-[#20232b] text-white text-[12px] font-bold">
           C

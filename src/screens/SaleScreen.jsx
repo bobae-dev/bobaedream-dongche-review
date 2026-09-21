@@ -1,4 +1,5 @@
 import { saleCopy } from "../data/copy.js";
+import SaleFieldSheet from "./sale/SaleFieldSheet.jsx";
 
 /**
  * 판매글 작성 화면 (탭 5번).
@@ -6,18 +7,19 @@ import { saleCopy } from "../data/copy.js";
  * 다른 작성 화면과 달리 SourceNavigation(탭 바)이 없고 자체 헤더만 쓴다.
  * 그래서 App.jsx 도 이 화면에는 onNavigate 를 넘기지 않는다.
  *
- * 차량 정보는 vehicleRows 배열을 돌려 한 번에 그린다.
- * 각 항목은 [라벨, 상태 필드명, 값, 필수여부] 튜플이다.
- *   - readOnlyFields 에 든 필드(인도 연월·색상·이전 횟수)는 수정 불가.
- *     차량 데이터에서 내려오는 값이라 직접 입력 대상이 아니다.
- *   - 'price' 행만 빨간 굵은 글씨로 강조한다.
+ * 차량 정보 5줄은 모두 직접 입력이 아니라 **탭하면 바텀시트가 뜨는 선택 필드**다.
+ * 어떤 시트가 뜨는지는 필드마다 다르다 (SaleFieldSheet 참고).
+ *   인도 연월 · 주행거리 · 이전 횟수 → 드럼식 휠
+ *   차량 색상                       → 3열 칩 그리드
+ *   희망 판매가                     → 숫자 키패드
+ *
+ * 값이 비어 있으면 회색 '선택'을 보여 주고, 'price' 행만 빨간 굵은 글씨다.
  *
  * NOTE: vehicleRows 의 required 가 전부 true 라서 튜플의 4번째 자리가
  *       사실상 상수다. 실제로 선택 항목이 생기면 의미가 살아난다.
  */
 function SaleScreen({ state, dispatch, onBack }) {
   const info = state.sale;
-  const readOnlyFields = new Set(["delivery", "color", "transfers"]);
   const vehicleRows = [
     ["인도 연월", "delivery", info.delivery, true],
     ["현재 주행거리(만 km)", "mileage", info.mileage, true],
@@ -65,33 +67,28 @@ function SaleScreen({ state, dispatch, onBack }) {
         </div>
         <div className="mt-[10px] px-[9px] py-[5px] rounded-[8px] bg-[#f7f8fc]">
           {vehicleRows.map(([label, field, value, required]) => (
-            <label
-              className="min-h-[44px] flex items-center gap-[5px] text-[#242731] text-[17px]"
+            <button
+              className="w-full min-h-[44px] flex items-center gap-[5px] text-[#242731] text-[17px] text-left"
               key={field}
+              onClick={() => dispatch({ type: "OPEN_SALE_SHEET", field })}
             >
               <span className="flex-none">
                 {label}
                 {required && <em className="ml-[3px]">*</em>}
               </span>
-              <input
-                className={`flex-1 min-w-0 border-0 outline-none bg-transparent [font:inherit] text-right placeholder:text-[#c7cbd7] ${
-                  field === "price"
-                    ? "text-[#ed492d] text-[21px] font-bold"
-                    : "text-[#282b34]"
+              <span
+                className={`flex-1 min-w-0 text-right whitespace-nowrap overflow-hidden text-ellipsis ${
+                  value === ""
+                    ? "text-[#c7cbd7]"
+                    : field === "price"
+                      ? "text-[#ed492d] text-[21px] font-bold"
+                      : "text-[#282b34]"
                 }`}
-                value={value}
-                placeholder={field === "mileage" ? "선택" : ""}
-                readOnly={readOnlyFields.has(field)}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_SALE_FIELD",
-                    field,
-                    value: e.target.value,
-                  })
-                }
-              />
+              >
+                {value === "" ? "선택" : value}
+              </span>
               <b className="text-[#aeb4c2] text-[25px] font-normal">›</b>
-            </label>
+            </button>
           ))}
         </div>
       </section>
@@ -138,6 +135,17 @@ function SaleScreen({ state, dispatch, onBack }) {
           </span>
         </div>
       </section>
+      {state.saleSheet && (
+        <SaleFieldSheet
+          field={state.saleSheet.field}
+          draft={state.saleSheet.draft}
+          onDraft={(value) =>
+            dispatch({ type: "SET_SALE_SHEET_DRAFT", value })
+          }
+          onConfirm={() => dispatch({ type: "CONFIRM_SALE_SHEET" })}
+          onClose={() => dispatch({ type: "CLOSE_SALE_SHEET" })}
+        />
+      )}
     </main>
   );
 }

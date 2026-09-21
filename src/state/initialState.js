@@ -40,6 +40,9 @@ export const initialState = {
     title: "",
     body: "",
   },
+  // 판매글에서 열려 있는 선택 시트. null 이면 닫힌 상태다.
+  // draft 는 '확정' 전까지의 임시 값이라, 닫기로 나가면 그대로 버려진다.
+  saleSheet: null,
   ownerPage: {
     model: "",
     barePrice: "",

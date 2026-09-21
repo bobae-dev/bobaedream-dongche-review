@@ -8,8 +8,10 @@ import { cityGroups } from "../data/cities.js";
  * 동시에 리뷰 화면으로 돌아간다. (리듀서에서 screen 까지 함께 바꾼다)
  *
  * 우측 A~Z 레일은 아직 표시 전용이다 — 눌러도 해당 그룹으로 이동하지 않는다.
- * 레일 위치의 right 계산식은 폰 프레임(최대 430px)의 바깥 여백을 감안해
- * 화면이 넓어져도 프레임에 붙어 있게 만드는 장치다.
+ * 레일 위치의 right 계산식은 앱 프레임(--app-width)의 바깥 여백을 감안해
+ * 화면이 넓어져도 프레임에 붙어 있게 만든다. 100vw 가 아니라 100% 를 쓰는
+ * 이유: fixed 요소의 % 는 스크롤바를 뺀 뷰포트 폭이라 프레임과 정확히 맞는다.
+ * (100vw 는 스크롤바를 포함해서 그 절반만큼 어긋난다)
  */
 function CityPickerScreen({ dispatch }) {
   return (
@@ -42,7 +44,7 @@ function CityPickerScreen({ dispatch }) {
           </div>
         ))}
       </main>
-      <nav className="fixed right-[max(calc((100vw-430px)/2+7px),7px)] top-[38%] flex flex-col gap-[5px] text-[#707685] text-[14px] text-center">
+      <nav className="fixed right-[max(calc((100%-var(--app-width))/2+7px),7px)] top-[38%] flex flex-col gap-[5px] text-[#707685] text-[14px] text-center">
         {ALPHABET.map((letter) => (
           <span key={letter}>{letter}</span>
         ))}

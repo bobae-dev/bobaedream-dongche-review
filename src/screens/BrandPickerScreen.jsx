@@ -44,7 +44,7 @@ function BrandPickerScreen({ state, dispatch }) {
         />
         <b className="text-[22px]">▣</b>
       </label>
-      <div className="fixed right-[max(calc((100vw-430px)/2+8px),8px)] top-[250px] z-[2] text-[#707685] text-center leading-[1.65] text-[12px]">
+      <div className="fixed right-[max(calc((100%-var(--app-width))/2+8px),8px)] top-[250px] z-[2] text-[#707685] text-center leading-[1.65] text-[12px]">
         {ALPHABET.map((letter, index) => (
           <Fragment key={letter}>
             {letter}
