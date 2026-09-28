@@ -76,14 +76,23 @@ export const saleCopy = {
 
 export const ownerCopy = {
   rewardTitle: "보상 안내",
-  receiptUpload: "구매 영수증 업로드",
+  rewardContribution: "기여 포인트",
+  rewardCoin: "300~500 코인",
+  receiptUpload: "영수증 업로드, 자동 인식",
   otherInfo: "기타 정보",
+  otherInfoHint: "(보충할수록 검토가 빨라져요)",
   location: "구매 지역",
   model: "브랜드·차종",
   barePrice: "차량 가격",
   totalPrice: "실구매 가격",
   purchaseTime: "구매 시기",
+  payment: "결제 방식",
+  paymentOptions: ["일시불", "할부"],
+  dealer: "구매 대리점",
   note: "비고",
+  selectHint: "선택하세요",
+  priceHint: "소수점 둘째 자리까지",
+  priceUnit: "만원",
 };
 
 export const energyCopy = {

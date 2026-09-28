@@ -50,6 +50,10 @@ export const initialState = {
     purchaseTime: "",
     city: "양천구",
     note: "",
+    // '기타 정보' 안의 항목들. 이 묶음은 접었다 펼 수 있고, 기본은 펼침이다.
+    payment: "할부",
+    dealer: "",
+    extraOpen: true,
   },
   energy: { title: "", body: "" },
 };

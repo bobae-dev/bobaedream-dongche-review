@@ -39,6 +39,7 @@ export default function App() {
   const cover = useMediaPicker();
   const newsPhotos = useMediaPicker({ multiple: true });
   const questionMedia = useMediaPicker({ multiple: true });
+  const ownerReceipts = useMediaPicker({ multiple: true });
 
   // 별 N 을 누르면 [N-0.5, N] 후보를 띄운다. 이 시점에는 점수가 바뀌지 않고,
   // 팝업에서 골라야 확정된다. 같은 별을 다시 누르면 닫는다.
@@ -153,6 +154,9 @@ export default function App() {
         <OwnerScreen
           state={state}
           dispatch={dispatch}
+          receipts={ownerReceipts.items}
+          onAddReceipt={ownerReceipts.add}
+          onRemoveReceipt={ownerReceipts.remove}
           onNavigate={navigate}
           onBack={goBack}
         />
