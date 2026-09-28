@@ -31,10 +31,16 @@
   }
 
   /* 모바일에서 누를 때 생기는 회색·파란 번쩍임을 없애고(앱에는 없다),
-     더블탭 확대 판정 때문에 생기는 탭 지연을 끈다. */
+     더블탭 확대 판정 때문에 생기는 탭 지연을 끈다.
+     overscroll-behavior-y 는 맨 위에서 아래로 당겼을 때의 '당겨서 새로고침'
+     과 튕김을 막는다. 글을 쓰다가 실수로 새로고침되면 입력이 전부 날아간다.
+
+     NOTE: 입력창(input·textarea) 글자 크기는 16px 이상으로 둘 것.
+           iOS Safari 는 16px 미만 입력창에 포커스가 가면 화면을 확대한다. */
   html {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    overscroll-behavior-y: none;
   }
 
   em {

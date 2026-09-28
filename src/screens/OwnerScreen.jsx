@@ -113,7 +113,7 @@ function OwnerScreen({
               ) : (
                 <>
                   <input
-                    className="flex-1 min-w-0 border-0 outline-none text-[#2a2d36] [font:inherit] text-right placeholder:text-[#c8ccd7]"
+                    className="flex-1 min-w-0 border-0 outline-none text-[#2a2d36] text-[16px] text-right placeholder:text-[#c8ccd7]"
                     value={info[field]}
                     placeholder={ownerCopy.priceHint}
                     inputMode="decimal"
