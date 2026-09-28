@@ -15,7 +15,7 @@ import { cityGroups } from "../data/cities.js";
  */
 function CityPickerScreen({ dispatch }) {
   return (
-    <section className="min-h-screen relative bg-white">
+    <section className="min-h-dvh relative bg-white">
       <header className="h-[76px] bg-white relative">
         <button
           className="absolute top-[14px] left-[20px] leading-none text-[42px] text-[#1c2029]"

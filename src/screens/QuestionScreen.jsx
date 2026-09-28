@@ -58,7 +58,7 @@ function QuestionScreen({
         onNavigate={onNavigate}
         onBack={onBack}
       />
-      <main className="min-h-[calc(100vh-58px-150px)] px-[9px] pt-[10px] pb-[170px] bg-[#eef1f8]">
+      <main className="min-h-[calc(100dvh-58px-150px)] px-[9px] pt-[10px] pb-[calc(170px_+_env(safe-area-inset-bottom))] bg-[#eef1f8]">
         <section
           ref={stripRef}
           onMouseDown={handleStripMouseDown}

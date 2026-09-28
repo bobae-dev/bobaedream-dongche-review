@@ -30,6 +30,13 @@
     cursor: pointer;
   }
 
+  /* 모바일에서 누를 때 생기는 회색·파란 번쩍임을 없애고(앱에는 없다),
+     더블탭 확대 판정 때문에 생기는 탭 지연을 끈다. */
+  html {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
   em {
     color: #ed6b1d;
     font-style: normal;
@@ -52,7 +59,11 @@
    바깥 여백은 body 배경 그대로 비워 둔다. */
 #root {
   width: min(100%, var(--app-width));
+  /* 모바일 브라우저의 100vh 는 주소창이 접혔을 때 기준이라 실제 보이는
+     높이보다 크다. dvh 는 주소창 상태를 따라가므로 이걸 쓰고, dvh 를 모르는
+     구형 브라우저를 위해 vh 를 먼저 깔아 둔다. */
   min-height: 100vh;
+  min-height: 100dvh;
   margin: 0 auto;
   background: #f4f6fb;
   overflow: visible;

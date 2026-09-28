@@ -1,5 +1,7 @@
 import { useEffect, useEffectEvent } from "react";
 
+import { useBodyScrollLock } from "../hooks/useBodyScrollLock.js";
+
 /**
  * 화면 아래에서 올라오는 바텀시트의 공통 껍데기.
  *
@@ -10,6 +12,10 @@ import { useEffect, useEffectEvent } from "react";
  * device px ÷ 3 = CSS px).
  *   제목 바 48px · 확정 버튼 44px(좌우 16px) · 버튼 아래 여백 41px
  *   상단 모서리 9px · 오버레이 rgba(0,0,0,0.6)
+ *
+ * 아이폰 홈 인디케이터 영역(safe-area-inset-bottom)이 버튼 아래 여백보다 크면
+ * 그만큼 더 띄운다. 확정 버튼이 없는 시트(가격 키패드)는 시트 자체에 여백을 준다.
+ * 열려 있는 동안에는 뒤 페이지 스크롤을 잠근다.
  *
  * 확정 버튼은 confirmLabel 이 있을 때만 그린다. disabled 면 회색으로 죽인다
  * (가격 입력에서 값이 비었을 때가 그렇다).
@@ -32,6 +38,7 @@ function BottomSheet({
   // onClose 는 부모가 매 렌더 새로 만드는 함수라, Effect Event 로 감싸
   // 최신 함수를 참조하되 리스너는 한 번만 달리게 한다.
   const close = useEffectEvent(() => onClose());
+  useBodyScrollLock();
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -43,11 +50,13 @@ function BottomSheet({
 
   return (
     <div
-      className="fixed inset-0 z-20 bg-[rgba(0,0,0,0.6)] flex items-end"
+      className="fixed inset-0 z-20 bg-[rgba(0,0,0,0.6)] flex items-end overscroll-contain"
       onClick={onClose}
     >
       <section
-        className="w-[min(100%,var(--app-width))] mx-auto bg-white rounded-t-[9px] overflow-hidden"
+        className={`w-[min(100%,var(--app-width))] mx-auto bg-white rounded-t-[9px] overflow-hidden ${
+          confirmLabel ? "" : "pb-[env(safe-area-inset-bottom)]"
+        }`}
         role="dialog"
         aria-modal="true"
         aria-label={title}
@@ -66,7 +75,7 @@ function BottomSheet({
         </div>
         {children}
         {confirmLabel && (
-          <div className="px-[16px] pt-[13px] pb-[41px]">
+          <div className="px-[16px] pt-[13px] pb-[max(41px,env(safe-area-inset-bottom))]">
             <button
               className={`w-full h-[44px] rounded-[7px] text-[17px] font-bold ${
                 confirmDisabled

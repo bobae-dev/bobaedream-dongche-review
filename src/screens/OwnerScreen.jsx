@@ -50,7 +50,7 @@ function OwnerScreen({
         onNavigate={onNavigate}
         onBack={onBack}
       />
-      <main className="min-h-[calc(100vh-58px)] px-[9px] pt-[10px] pb-[24px] bg-[#eef1f8]">
+      <main className="min-h-[calc(100dvh-58px)] px-[9px] pt-[10px] pb-[24px] bg-[#eef1f8]">
         <section className="rounded-[14px] px-[14px] py-[17px] bg-[linear-gradient(#fff6de_0_30%,#fff_62%)]">
           <h2 className="mb-[14px] text-[22px] relative after:content-[''] after:block after:w-[78px] after:h-[4px] after:mt-[-6px] after:bg-[#ffc928]">
             {ownerCopy.rewardTitle}

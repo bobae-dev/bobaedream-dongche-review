@@ -55,7 +55,7 @@ function NewsScreen({
         onNavigate={onNavigate}
         onBack={onBack}
       />
-      <main className="min-h-[calc(100vh-58px-150px)] px-[9px] pt-[10px] pb-[170px] bg-[#eef1f8]">
+      <main className="min-h-[calc(100dvh-58px-150px)] px-[9px] pt-[10px] pb-[calc(170px_+_env(safe-area-inset-bottom))] bg-[#eef1f8]">
         <section
           ref={stripRef}
           onMouseDown={handleStripMouseDown}
@@ -160,9 +160,9 @@ function NewsScreen({
           <p className="mt-[14px] text-[#9fa5b5] text-[15px] whitespace-nowrap">
             <span className="mr-[4px] text-[#9ba1b0] text-[20px]">♧</span>
             {newsCopy.shareHint}
-            <a className="text-[#2451c8] no-underline" href="#">
+            <button type="button" className="text-[#2451c8]">
               {newsCopy.shareLink}
-            </a>
+            </button>
           </p>
         </section>
         <ChipRow

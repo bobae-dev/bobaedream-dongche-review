@@ -20,7 +20,7 @@ function EnergyScreen({ state, dispatch, onNavigate, onBack }) {
         onNavigate={onNavigate}
         onBack={onBack}
       />
-      <main className="min-h-[calc(100vh-58px)] px-[9px] pt-[9px] pb-[170px] bg-[#eef1f8]">
+      <main className="min-h-[calc(100dvh-58px)] px-[9px] pt-[9px] pb-[170px] bg-[#eef1f8]">
         <p className="mx-[5px] mb-[13px] text-[#8f96a8] text-[16px]">
           <span className="mr-[5px] text-[20px]">ⓘ</span>
           {energyCopy.notice}

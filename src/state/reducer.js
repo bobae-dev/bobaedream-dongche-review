@@ -9,6 +9,8 @@
  *                             화면이 늘어도 case 하나만 추가하면 된다.
  *
  * BACK 은 항상 'review' 로 돌아간다 — 히스토리 스택이 없는 단순 구조다.
+ * HISTORY_BACK 은 브라우저 뒤로가기용이다. 가장 위에 떠 있는 것 하나만
+ * 닫는다(시트·모달 → 화면 순). selectors.js 의 historyDepth 를 1 줄인다.
  */
 export function reduce(state, action) {
   switch (action.type) {
@@ -32,6 +34,13 @@ export function reduce(state, action) {
       return { ...state, screen: "city-picker" };
     case "BACK":
       return { ...state, screen: "review" };
+    case "HISTORY_BACK":
+      if (state.saleSheet) return { ...state, saleSheet: null };
+      if (state.datePicker.open) {
+        return { ...state, datePicker: { ...state.datePicker, open: false } };
+      }
+      if (state.screen !== "review") return { ...state, screen: "review" };
+      return state;
     case "SELECT_MODEL":
       return {
         ...state,

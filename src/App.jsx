@@ -10,15 +10,19 @@ import QuestionScreen from "./screens/QuestionScreen.jsx";
 import SaleScreen from "./screens/SaleScreen.jsx";
 import DatePickerModal from "./screens/review/DatePickerModal.jsx";
 import ReviewScreen from "./screens/review/ReviewScreen.jsx";
+import { useHistoryBack } from "./hooks/useHistoryBack.js";
 import { useMediaPicker } from "./hooks/useMediaPicker.js";
 import { initialState } from "./state/initialState.js";
 import { reduce } from "./state/reducer.js";
+import { historyDepth } from "./state/selectors.js";
 
 /**
  * 앱의 루트 컴포넌트 — 상태 소유와 화면 라우팅을 맡는다.
  *
  * 화면 전환은 라우터 없이 state.screen 값에 따른 분기로 처리한다.
  * (URL 을 쓰지 않는 단일 페이지 구조라, 새로고침하면 처음 화면으로 돌아간다)
+ * 브라우저 뒤로가기는 useHistoryBack 이 화면 깊이와 히스토리를 맞춰
+ * 앱 안에서 한 단계씩 물러나게 한다.
  *
  * 상태는 세 군데로 나뉘어 있다.
  *   1) useReducer  : 폼 값과 현재 화면 등 앱 전역 상태 (state/reducer.js)
@@ -40,6 +44,11 @@ export default function App() {
   const newsPhotos = useMediaPicker({ multiple: true });
   const questionMedia = useMediaPicker({ multiple: true });
   const ownerReceipts = useMediaPicker({ multiple: true });
+
+  useHistoryBack(historyDepth(state), () => {
+    setActiveRatingPopup(null);
+    dispatch({ type: "HISTORY_BACK" });
+  });
 
   // 별 N 을 누르면 [N-0.5, N] 후보를 띄운다. 이 시점에는 점수가 바뀌지 않고,
   // 팝업에서 골라야 확정된다. 같은 별을 다시 누르면 닫는다.

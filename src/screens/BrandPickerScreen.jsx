@@ -8,9 +8,10 @@ import { brands } from "../data/brands.js";
  * 검색어(state.brandQuery)로 목록을 걸러 보여 준다. 필터링은 여기서 하고
  * 검색어 자체는 리듀서(SET_BRAND_QUERY)가 들고 있다.
  *
- * NOTE: 어느 브랜드를 눌러도 SELECT_MODEL 이 항상 같은 차량
- *       ('AITO M8')을 고정으로 넘긴다. 디자인 재현용 임시 동작이며,
- *       실제 차종 목록이 붙으면 눌린 brand 를 넘기도록 바꿔야 한다.
+ * 브랜드를 누르면 그 이름을 차량명으로 SELECT_MODEL 에 넘긴다.
+ * NOTE: 실제 앱은 브랜드 → 차종 → 트림을 차례로 고르지만 아직 차종·트림
+ *       목록이 없어 브랜드 단계에서 끝낸다. trim 은 빈 문자열로 넘기며,
+ *       리뷰 화면의 차량 카드는 trim 이 비면 그 줄을 그리지 않는다.
  *
  * 구분 헤더 'A' 도 마찬가지로 고정값이다 — 현재 데이터가 A 그룹뿐이라
  * 그룹 분할 로직 없이 한 덩어리로 그린다.
@@ -52,7 +53,7 @@ function BrandPickerScreen({ state, dispatch }) {
           </Fragment>
         ))}
       </div>
-      <div className="bg-white min-h-[calc(100vh-151px)] px-[17px] pb-[28px]">
+      <div className="bg-white min-h-[calc(100dvh-151px)] px-[17px] pb-[28px]">
         <div className="mx-[-17px] px-[17px] py-[10px] bg-[#f4f6fb] text-[#969cac] text-[18px] font-bold">
           A
         </div>
@@ -61,11 +62,7 @@ function BrandPickerScreen({ state, dispatch }) {
             className="w-full min-h-[69px] flex items-center gap-[25px] text-left text-[20px] text-[#242731]"
             key={brand}
             onClick={() =>
-              dispatch({
-                type: "SELECT_MODEL",
-                model: "AITO M8",
-                trim: "2025년형 레인지 익스텐더 Ultra 6인승 AWD",
-              })
+              dispatch({ type: "SELECT_MODEL", model: brand, trim: "" })
             }
           >
             <span className="w-[68px] h-[28px] p-[3px] inline-flex items-center justify-center bg-[#d9ff22] border-2 border-[#a8c900] text-[#12151b] text-[9px] font-extrabold">

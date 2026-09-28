@@ -25,7 +25,7 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
         onNavigate={onNavigate}
         onBack={onBack}
       />
-      <main className="min-h-[calc(100vh-58px-150px)] px-[9px] pt-[10px] pb-[170px] bg-[#eef1f8]">
+      <main className="min-h-[calc(100dvh-58px-150px)] px-[9px] pt-[10px] pb-[calc(170px_+_env(safe-area-inset-bottom))] bg-[#eef1f8]">
         <section className="rounded-[14px] bg-white h-[355px] px-[17px] pt-[18px] pb-[15px]">
           <input
             className="w-full border-0 outline-none bg-transparent text-[#343741] h-[42px] pb-[10px] border-b border-[#e2e5ec] text-[21px] font-bold placeholder:text-[#c8ccd8] placeholder:opacity-100"
@@ -56,9 +56,9 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
           <p className="mt-[7px] text-[#9fa5b5] text-[15px] whitespace-nowrap">
             <span className="mr-[4px] text-[20px]">♧</span>
             {longPostCopy.shareHint}
-            <a className="text-[#2451c8] no-underline" href="#">
+            <button type="button" className="text-[#2451c8]">
               {longPostCopy.shareLink}
-            </a>
+            </button>
           </p>
         </section>
         <ChipRow
@@ -67,7 +67,7 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
           items={SHARED_TOPICS}
         />
       </main>
-      <footer className="fixed bottom-0 left-1/2 z-[4] w-[min(100%,var(--app-width))] -translate-x-1/2 bg-white shadow-[0_-2px_12px_rgba(32,39,63,0.05)]">
+      <footer className="fixed bottom-0 left-1/2 z-[4] w-[min(100%,var(--app-width))] -translate-x-1/2 pb-[env(safe-area-inset-bottom)] bg-white shadow-[0_-2px_12px_rgba(32,39,63,0.05)]">
         <div className="h-[42px] flex items-center gap-[9px] px-[16px] text-[#20232b]">
           <span className="w-[20px] h-[20px] inline-flex items-center justify-center rounded-full bg-[#20232b] text-white text-[12px] font-bold">
             C

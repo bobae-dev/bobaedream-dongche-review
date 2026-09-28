@@ -1,3 +1,5 @@
+import { useBodyScrollLock } from "../../hooks/useBodyScrollLock.js";
+
 /**
  * 인도 시기(연/월) 선택 바텀시트.
  *
@@ -9,16 +11,20 @@
  *   - CONFIRM_DATE_PICKER: '확인'을 눌러야 ownerInfo.deliveryTime 에 반영
  * 그래서 '취소'로 닫으면 원래 값이 그대로 남는다.
  *
+ * 열려 있는 동안 뒤 페이지 스크롤을 잠그고, 아이폰 홈 인디케이터 영역만큼
+ * 아래를 띄운다.
+ *
  * 렌더링 위치가 ReviewScreen 내부가 아니라 App.jsx 인 이유는
  * 화면 전체를 덮는 오버레이라서다.
  */
 function DatePickerModal({ state, dispatch }) {
+  useBodyScrollLock();
   const years = [2024, 2025, 2026, 2027, 2028];
   const months = Array.from({ length: 12 }, (_, index) => index + 1);
   return (
-    <div className="fixed inset-0 z-20 bg-[rgba(0,0,0,0.5)] flex items-end">
+    <div className="fixed inset-0 z-20 bg-[rgba(0,0,0,0.5)] flex items-end overscroll-contain">
       <section
-        className="w-[min(100%,var(--app-width))] mx-auto bg-white rounded-t-[16px] overflow-hidden"
+        className="w-[min(100%,var(--app-width))] mx-auto pb-[env(safe-area-inset-bottom)] bg-white rounded-t-[16px] overflow-hidden"
         role="dialog"
         aria-label="인도 시기 선택"
       >
@@ -38,7 +44,7 @@ function DatePickerModal({ state, dispatch }) {
           </button>
         </div>
         <div className="h-[300px] flex overflow-hidden">
-          <div className="flex-1 overflow-y-auto [scroll-snap-type:y_mandatory] py-[112px] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex-1 overflow-y-auto overscroll-contain [scroll-snap-type:y_mandatory] py-[112px] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {years.map((year) => (
               <button
                 key={year}
@@ -55,7 +61,7 @@ function DatePickerModal({ state, dispatch }) {
               </button>
             ))}
           </div>
-          <div className="flex-1 overflow-y-auto [scroll-snap-type:y_mandatory] py-[112px] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex-1 overflow-y-auto overscroll-contain [scroll-snap-type:y_mandatory] py-[112px] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {months.map((month) => (
               <button
                 key={month}

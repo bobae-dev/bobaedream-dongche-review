@@ -92,7 +92,7 @@ function WheelColumn({ items, value, onSelect }) {
     <div
       ref={listRef}
       onScroll={handleScroll}
-      className="flex-1 h-full overflow-y-auto [scroll-snap-type:y_mandatory] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      className="flex-1 h-full overflow-y-auto overscroll-contain [scroll-snap-type:y_mandatory] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       style={{ paddingTop: EDGE_PAD, paddingBottom: EDGE_PAD }}
     >
       {items.map((item, itemIndex) => {

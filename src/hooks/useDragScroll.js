@@ -13,11 +13,14 @@ const CLICK_SUPPRESS_MS = 120;
  *   [-ms-overflow-style:none]       — 구형 Edge/IE
  *   [&::-webkit-scrollbar]:hidden   — Chrome/Safari
  * overscroll-behavior-inline:contain 은 끝까지 밀었을 때 스크롤이 바깥(페이지)
- * 으로 번지지 않게 막고, touch-action:pan-x 는 터치에서 가로 제스처만 받는다.
+ * 으로 번지지 않게 막는다.
  * select-none 은 드래그 중 글자가 블록 선택되는 것을 막는다.
+ *
+ * touch-action 은 일부러 지정하지 않는다. pan-x 로 묶으면 이 영역에서
+ * 시작한 세로 스와이프가 막혀, 사진 줄·칩 줄 위에서 페이지가 스크롤되지 않는다.
  */
 export const DRAG_SCROLLER_CLASS =
-  "overflow-x-auto select-none [overscroll-behavior-inline:contain] [touch-action:pan-x] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden";
+  "overflow-x-auto select-none [overscroll-behavior-inline:contain] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden";
 
 /**
  * 마우스로 끌어서 가로 스크롤하는 동작을 붙여 주는 훅.

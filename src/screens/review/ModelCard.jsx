@@ -11,8 +11,8 @@
  * 인도 시기 / 구매 지역은 직접 입력이 아니라 readOnly 인풋을 눌러
  * 각각 모달(OPEN_DATE_PICKER)과 별도 화면(OPEN_CITY_PICKER)을 띄운다.
  *
- * NOTE: 차량명 'AITO M8' 과 트림 문자열이 아직 하드코딩되어 있다.
- *       state.model.name / state.model.trim 으로 바꿔야 할 자리다.
+ * 차량명·트림은 state.model 에서 읽는다. 트림은 아직 고르는 단계가 없어
+ * 비어 있을 수 있고, 그때는 트림 줄을 생략한다.
  */
 function ModelCard({ state, dispatch }) {
   if (!state.model) {
@@ -37,10 +37,12 @@ function ModelCard({ state, dispatch }) {
     <section className="mx-[9px] mb-[10px] px-[14px] pt-[18px] pb-[12px] rounded-[14px] bg-white">
       <div className="flex justify-between items-center pb-[16px] border-b border-[#e3e6ee]">
         <div>
-          <h2 className="mb-[8px] text-[24px]">AITO M8</h2>
-          <p className="m-0 max-w-[275px] text-[#6f7584] text-[17px] whitespace-nowrap overflow-hidden text-ellipsis">
-            2025년형 레인지 익스텐더 Ultra 6인승 AWD
-          </p>
+          <h2 className="mb-[8px] text-[24px]">{state.model.name}</h2>
+          {state.model.trim && (
+            <p className="m-0 max-w-[275px] text-[#6f7584] text-[17px] whitespace-nowrap overflow-hidden text-ellipsis">
+              {state.model.trim}
+            </p>
+          )}
         </div>
         <div className="text-[45px]">🚙</div>
       </div>

@@ -29,7 +29,7 @@ function SaleScreen({ state, dispatch, onBack }) {
   ];
 
   return (
-    <main className="min-h-screen px-[9px] pb-[24px] bg-[#eef1f8]">
+    <main className="min-h-dvh px-[9px] pb-[24px] bg-[#eef1f8]">
       <header className="h-[76px] flex items-center bg-[#f5f6fb]">
         <button
           className="w-[45px] text-[#171a22] text-[42px] leading-none"
