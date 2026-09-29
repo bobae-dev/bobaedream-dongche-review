@@ -1,6 +1,7 @@
 import SourceNavigation from "../components/SourceNavigation.jsx";
 import { ownerCopy } from "../data/copy.js";
 import InvoiceUploadBox from "./owner/InvoiceUploadBox.jsx";
+import PurchaseDateSheet from "./owner/PurchaseDateSheet.jsx";
 
 /**
  * 차주가 화면 — 차주 인증 및 구매 정보 등록.
@@ -10,13 +11,16 @@ import InvoiceUploadBox from "./owner/InvoiceUploadBox.jsx";
  * 구매 정보 5줄은 두 종류로 나뉜다. 실제 앱이 그렇게 구분한다.
  *   선택형(select) : 브랜드·차종 · 구매 시기 · 구매 지역 — 오른쪽에 '›' 가 붙고
  *                    값이 없으면 회색 안내 문구를 보여 준다. 누르는 줄이라
- *                    button 으로 그린다. 지금은 구매 지역만 선택 화면
- *                    (CityPickerScreen)이 연결되어 있고 나머지는 표시만 한다.
+ *                    button 으로 그린다.
+ *                      브랜드·차종 → 브랜드 → 차종 → 세부 모델 선택 화면
+ *                      구매 시기   → 연·월·일 시트 (PurchaseDateSheet)
+ *                      구매 지역   → 지역 선택 화면
  *   입력형(input)  : 차량 가격 · 실구매 가격 — 직접 타이핑하고 '만원' 단위가
  *                    뒤에 붙는다. '›' 는 없다.
  *
- * '기타 정보'는 접었다 펼 수 있는 묶음이고 기본이 펼침이다. 안에는 결제 방식
- * 칩 두 개와 구매 대리점 선택이 들어간다.
+ * '기타 정보'는 접었다 펼 수 있는 묶음이고 앱처럼 기본은 접힘이다. 안에는
+ * 결제 방식 칩 두 개와 구매 대리점 선택이 들어간다. 대리점은 브랜드마다
+ * 달라서, 앱처럼 차량을 고르기 전에는 눌러도 열리지 않는다.
  *
  * 값은 state.ownerPage 에 저장된다.
  * (리뷰 화면 안의 차주 정보는 state.ownerInfo 로 별개다 — 혼동 주의)
@@ -35,10 +39,20 @@ function OwnerScreen({
   const info = state.ownerPage;
 
   const fields = [
-    { label: ownerCopy.model, field: "model", kind: "select" },
+    {
+      label: ownerCopy.model,
+      field: "model",
+      kind: "select",
+      onSelect: () => dispatch({ type: "OPEN_MODEL_PICKER", from: "owner" }),
+    },
     { label: ownerCopy.barePrice, field: "barePrice", kind: "input" },
     { label: ownerCopy.totalPrice, field: "totalPrice", kind: "input" },
-    { label: ownerCopy.purchaseTime, field: "purchaseTime", kind: "select" },
+    {
+      label: ownerCopy.purchaseTime,
+      field: "purchaseTime",
+      kind: "select",
+      onSelect: () => dispatch({ type: "OPEN_OWNER_DATE", today: today() }),
+    },
     {
       label: ownerCopy.location,
       field: "city",
@@ -194,25 +208,50 @@ function OwnerScreen({
                   </button>
                 ))}
               </div>
-              <label className="min-h-[57px] flex items-center gap-[5px]">
-                <strong className="flex-1 text-[#242731] text-[17px]">
+              <button
+                type="button"
+                className="w-full min-h-[57px] flex items-center gap-[5px] text-left"
+                onClick={() => {
+                  if (info.model) dispatch({ type: "OPEN_DEALER_PICKER" });
+                }}
+              >
+                <strong className="flex-none text-[#242731] text-[17px]">
                   {ownerCopy.dealer}
                 </strong>
                 <span
-                  className={`text-[17px] ${
+                  className={`flex-1 min-w-0 text-right whitespace-nowrap overflow-hidden text-ellipsis text-[17px] ${
                     info.dealer ? "text-[#2a2d36]" : "text-[#c8ccd7]"
                   }`}
                 >
                   {info.dealer || ownerCopy.selectHint}
                 </span>
                 <b className="text-[#aeb4c2] text-[25px] font-normal">›</b>
-              </label>
+              </button>
             </div>
           )}
         </section>
       </main>
+      {state.ownerDateSheet && (
+        <PurchaseDateSheet
+          value={state.ownerDateSheet}
+          today={today()}
+          onChange={(value) => dispatch({ type: "SET_OWNER_DATE", value })}
+          onConfirm={() => dispatch({ type: "CONFIRM_OWNER_DATE" })}
+          onClose={() => dispatch({ type: "CLOSE_OWNER_DATE" })}
+        />
+      )}
     </>
   );
+}
+
+/** 오늘 날짜. 구매 시기는 오늘까지만 고를 수 있다. */
+function today() {
+  const now = new Date();
+  return {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    day: now.getDate(),
+  };
 }
 
 /** 보상 안내 줄머리의 노란 원형 체크. */

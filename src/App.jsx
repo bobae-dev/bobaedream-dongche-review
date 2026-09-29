@@ -8,6 +8,9 @@ import NewsScreen from "./screens/NewsScreen.jsx";
 import OwnerScreen from "./screens/OwnerScreen.jsx";
 import QuestionScreen from "./screens/QuestionScreen.jsx";
 import SaleScreen from "./screens/SaleScreen.jsx";
+import SeriesPickerScreen from "./screens/model/SeriesPickerScreen.jsx";
+import TrimPickerScreen from "./screens/model/TrimPickerScreen.jsx";
+import DealerPickerScreen from "./screens/owner/DealerPickerScreen.jsx";
 import DatePickerModal from "./screens/review/DatePickerModal.jsx";
 import ReviewScreen from "./screens/review/ReviewScreen.jsx";
 import { useHistoryBack } from "./hooks/useHistoryBack.js";
@@ -15,7 +18,7 @@ import { useMediaPicker } from "./hooks/useMediaPicker.js";
 import { useScreenScroll } from "./hooks/useScreenScroll.js";
 import { initialState } from "./state/initialState.js";
 import { reduce } from "./state/reducer.js";
-import { historyDepth } from "./state/screens.js";
+import { historyDepth, screenDepth } from "./state/screens.js";
 
 /**
  * 앱의 루트 컴포넌트 — 상태 소유와 화면 라우팅을 맡는다.
@@ -24,7 +27,7 @@ import { historyDepth } from "./state/screens.js";
  * (URL 을 쓰지 않는 단일 페이지 구조라, 새로고침하면 처음 화면으로 돌아간다)
  * 브라우저 뒤로가기는 useHistoryBack 이 화면 깊이와 히스토리를 맞춰
  * 앱 안에서 한 단계씩 물러나게 한다. 화면이 바뀔 때의 스크롤 위치는
- * useScreenScroll 이 정한다(새 화면은 맨 위, 선택 화면에서 돌아오면 원래 자리).
+ * useScreenScroll 이 정한다(들어가면 맨 위, 뒤로 나오면 떠날 때의 자리).
  *
  * 상태는 세 군데로 나뉘어 있다.
  *   1) useReducer  : 폼 값과 현재 화면 등 앱 전역 상태 (state/reducer.js)
@@ -46,7 +49,7 @@ export default function App() {
   const questionMedia = useMediaPicker({ multiple: true });
   const ownerReceipts = useMediaPicker({ multiple: true });
 
-  useScreenScroll(state.screen);
+  useScreenScroll(state.screen, screenDepth(state));
   useHistoryBack(historyDepth(state), () => {
     setActiveRatingPopup(null);
     dispatch({ type: "HISTORY_BACK" });
@@ -160,7 +163,15 @@ export default function App() {
       );
     case "city-picker":
       return <CityPickerScreen dispatch={dispatch} />;
-    default:
+    case "brand-picker":
       return <BrandPickerScreen state={state} dispatch={dispatch} />;
+    case "series-picker":
+      return <SeriesPickerScreen state={state} dispatch={dispatch} />;
+    case "trim-picker":
+      return <TrimPickerScreen state={state} dispatch={dispatch} />;
+    case "dealer-picker":
+      return <DealerPickerScreen state={state} dispatch={dispatch} />;
+    default:
+      return null;
   }
 }

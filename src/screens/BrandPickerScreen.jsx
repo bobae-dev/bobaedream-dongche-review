@@ -1,78 +1,89 @@
-import { Fragment } from "react";
-import { ALPHABET } from "../data/alphabet.js";
-import { brands } from "../data/brands.js";
+import IndexRail from "../components/IndexRail.jsx";
+import PickerHeader from "../components/PickerHeader.jsx";
+import { modelPickerCopy } from "../data/copy.js";
+import { brandGroups } from "../data/vehicles.js";
+import { useGroupIndex } from "../hooks/useGroupIndex.js";
+
+/** 고정 머리글(헤더) 높이. 그룹 머리글이 이 아래에 붙는다. */
+const TOP_HEIGHT = 42;
 
 /**
- * 차량 브랜드 선택 화면 (전체 화면 전환형).
+ * 차량 선택 1단계 — 브랜드 선택 (실제 앱의 '选择品牌').
  *
- * 검색어(state.brandQuery)로 목록을 걸러 보여 준다. 필터링은 여기서 하고
- * 검색어 자체는 리듀서(SET_BRAND_QUERY)가 들고 있다.
+ * 브랜드를 고르면 차종 선택으로 넘어간다(SELECT_BRAND). 리뷰 화면과 차주가
+ * 화면이 같이 쓰고, 어느 쪽에서 열었는지는 state.modelPicker.from 이 안다.
  *
- * 브랜드를 누르면 그 이름을 차량명으로 SELECT_MODEL 에 넘긴다.
- * NOTE: 실제 앱은 브랜드 → 차종 → 트림을 차례로 고르지만 아직 차종·트림
- *       목록이 없어 브랜드 단계에서 끝낸다. trim 은 빈 문자열로 넘기며,
- *       리뷰 화면의 차량 카드는 trim 이 비면 그 줄을 그리지 않는다.
+ * 치수는 실제 앱(device px ÷ 3)을 재서 맞췄다.
+ *   헤더 42 · 그룹 머리글 29 · 브랜드 행 60 (구분선 없음)
+ *   로고 29 × 29 (왼쪽 21) · 이름 16px (왼쪽 72)
+ *   방금 고른 브랜드는 이름이 주황(#d18700)이다 — 뒤로 돌아왔을 때 보인다.
+ * 지역 선택과 달리 검색창이 없고, 레일은 A~Z 26글자가 모두 있다.
  *
- * 구분 헤더 'A' 도 마찬가지로 고정값이다 — 현재 데이터가 A 그룹뿐이라
- * 그룹 분할 로직 없이 한 덩어리로 그린다.
+ * 로고는 실제 앱의 브랜드 로고 이미지 자리다. 로고 파일을 쓸 수 없어서
+ * 브랜드 첫 글자를 넣은 회색 원으로 대신한다.
  */
 function BrandPickerScreen({ state, dispatch }) {
-  const visibleBrands = brands.filter((brand) =>
-    brand.toLowerCase().includes(state.brandQuery.toLowerCase()),
-  );
+  const letters = brandGroups.map(([letter]) => letter);
+  const { activeLetter, groupRef, jumpTo } = useGroupIndex(letters, TOP_HEIGHT);
+  const selected = state.modelPicker.brand;
 
   return (
-    <>
-      <header className="h-[88px] flex items-center justify-center relative bg-white">
-        <button
-          className="absolute left-[16px] text-[42px] text-[#1c2029]"
-          aria-label="뒤로"
-          onClick={() => dispatch({ type: "BACK" })}
-        >
-          ←
-        </button>
-        <h1 className="m-0 text-[24px]">차량 선택</h1>
-      </header>
-      <label className="h-[53px] mx-[17px] mb-[10px] px-[14px] flex items-center gap-[10px] border border-[#f0b927] rounded-[8px] bg-white text-[#999eaa]">
-        <span className="text-[35px] leading-none">⌕</span>
-        <input
-          className="flex-1 border-0 outline-none text-[18px]"
-          value={state.brandQuery}
-          placeholder="차량 브랜드를 검색하세요"
-          onChange={(e) =>
-            dispatch({ type: "SET_BRAND_QUERY", value: e.target.value })
-          }
+    <section className="min-h-dvh bg-white">
+      <div className="sticky top-0 z-[3]">
+        <PickerHeader
+          title={modelPickerCopy.brandTitle}
+          onBack={() => dispatch({ type: "BACK" })}
         />
-        <b className="text-[22px]">▣</b>
-      </label>
-      <div className="fixed right-[max(calc((100%-var(--app-width))/2+8px),8px)] top-[250px] z-[2] text-[#707685] text-center leading-[1.65] text-[12px]">
-        {ALPHABET.map((letter, index) => (
-          <Fragment key={letter}>
-            {letter}
-            {index < ALPHABET.length - 1 && <br />}
-          </Fragment>
-        ))}
       </div>
-      <div className="bg-white min-h-[calc(100dvh-151px)] px-[17px] pb-[28px]">
-        <div className="mx-[-17px] px-[17px] py-[10px] bg-[#f4f6fb] text-[#969cac] text-[18px] font-bold">
-          A
-        </div>
-        {visibleBrands.map((brand) => (
-          <button
-            className="w-full min-h-[69px] flex items-center gap-[25px] text-left text-[20px] text-[#242731]"
-            key={brand}
-            onClick={() =>
-              dispatch({ type: "SELECT_MODEL", model: brand, trim: "" })
-            }
-          >
-            <span className="w-[68px] h-[28px] p-[3px] inline-flex items-center justify-center bg-[#d9ff22] border-2 border-[#a8c900] text-[#12151b] text-[9px] font-extrabold">
-              ◉
-            </span>
-            <span>{brand}</span>
-          </button>
+
+      <main className="pr-[28px] pb-[24px]">
+        {brandGroups.map(([letter, brands]) => (
+          <div key={letter} ref={groupRef(letter)}>
+            <h2
+              className="sticky z-[2] h-[29px] pl-[16px] flex items-center bg-white text-[14px] font-normal text-[#1f2129]"
+              style={{ top: TOP_HEIGHT }}
+            >
+              {letter}
+            </h2>
+            {brands.map((brand) => (
+              <button
+                key={brand}
+                className="w-full h-[60px] flex items-center pl-[21px] text-left"
+                onClick={() => dispatch({ type: "SELECT_BRAND", brand })}
+              >
+                <BrandMark name={brand} />
+                <span
+                  className={`ml-[22px] text-[16px] ${
+                    brand === selected ? "text-[#d18700]" : "text-[#1f2129]"
+                  }`}
+                >
+                  {brand}
+                </span>
+              </button>
+            ))}
+          </div>
         ))}
-      </div>
-    </>
+      </main>
+
+      <IndexRail
+        letters={letters}
+        activeLetter={activeLetter}
+        onJump={jumpTo}
+        top={TOP_HEIGHT}
+      />
+    </section>
+  );
+}
+
+/** 브랜드 로고 자리. 이름 첫 글자를 넣은 29px 회색 원. */
+function BrandMark({ name }) {
+  return (
+    <span
+      className="w-[29px] h-[29px] flex-none flex items-center justify-center rounded-full bg-[#f2f3f7] text-[#979aa8] text-[11px] font-semibold"
+      aria-hidden="true"
+    >
+      {[...name][0]}
+    </span>
   );
 }
 

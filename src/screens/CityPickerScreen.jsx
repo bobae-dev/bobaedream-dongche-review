@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import IndexRail from "../components/IndexRail.jsx";
+import PickerHeader from "../components/PickerHeader.jsx";
+import { SearchIcon } from "../components/icons.jsx";
 import { cityPickerCopy } from "../data/copy.js";
 import { cityGroups } from "../data/cities.js";
 import { useGroupIndex } from "../hooks/useGroupIndex.js";
@@ -47,18 +49,10 @@ function CityPickerScreen({ dispatch }) {
   return (
     <section className="min-h-dvh bg-white">
       <div className="sticky top-0 z-[3] bg-white pb-[4px]">
-        <header className="relative h-[42px] flex items-center justify-center">
-          <button
-            className="absolute left-[10px] top-1/2 -translate-y-1/2 p-[4px]"
-            aria-label="뒤로"
-            onClick={() => dispatch({ type: "BACK" })}
-          >
-            <BackArrowIcon />
-          </button>
-          <h1 className="text-[18px] font-semibold text-[#1f2129]">
-            {cityPickerCopy.title}
-          </h1>
-        </header>
+        <PickerHeader
+          title={cityPickerCopy.title}
+          onBack={() => dispatch({ type: "BACK" })}
+        />
         <label className="mt-[6px] mx-[16px] h-[32px] flex items-center gap-[10px] pl-[10px] pr-[10px] rounded-[2px] bg-[#f7f8fc]">
           <SearchIcon />
           {/* 앱은 안내 문구가 14px 이지만 입력 글자는 16px 로 둔다.
@@ -114,44 +108,6 @@ function CityPickerScreen({ dispatch }) {
         top={TOP_HEIGHT}
       />
     </section>
-  );
-}
-
-/** 헤더 왼쪽 ← 화살표. 앱 측정값: 폭 20 · 높이 약 15, 색 #1f2129. */
-function BackArrowIcon() {
-  return (
-    <svg
-      width="20"
-      height="16"
-      viewBox="0 0 20 16"
-      fill="none"
-      stroke="#1f2129"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M19 8H1.5M8 1.5 1.5 8 8 14.5" />
-    </svg>
-  );
-}
-
-/** 검색창 돋보기. 앱 측정값: 약 12.5px, 검색창 왼쪽에서 10px. */
-function SearchIcon() {
-  return (
-    <svg
-      width="13"
-      height="13"
-      viewBox="0 0 13 13"
-      fill="none"
-      stroke="#1f2129"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      aria-hidden="true"
-    >
-      <circle cx="5.6" cy="5.6" r="4.6" />
-      <path d="m9.1 9.1 3 3" />
-    </svg>
   );
 }
 

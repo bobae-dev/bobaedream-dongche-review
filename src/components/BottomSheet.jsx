@@ -21,6 +21,11 @@ import { useBodyScrollLock } from "../hooks/useBodyScrollLock.js";
  * (가격 입력에서 값이 비었을 때가 그렇다).
  *
  * @param title         가운데 제목
+ * 날짜 시트(구매 시기)는 모양이 달라서 variant="actions" 로 그린다.
+ *   제목 줄 대신 왼쪽 '취소'(#606370) · 오른쪽 '확정'(#ffcc32) 글자 버튼이 있고
+ *   아래쪽 큰 확정 버튼이 없다. 모서리 12 · 오버레이 rgba(0,0,0,0.48).
+ *
+ * @param variant       "title"(기본) | "actions"
  * @param onClose       × 또는 바깥/Esc 로 닫을 때
  * @param onConfirm     확정 버튼
  * @param confirmLabel  확정 버튼 문구. 없으면 버튼 자체를 그리지 않는다.
@@ -28,6 +33,7 @@ import { useBodyScrollLock } from "../hooks/useBodyScrollLock.js";
  * @param children      시트 본문
  */
 function BottomSheet({
+  variant = "title",
   title,
   onClose,
   onConfirm,
@@ -47,6 +53,33 @@ function BottomSheet({
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  if (variant === "actions") {
+    return (
+      <div
+        className="fixed inset-0 z-20 bg-[rgba(0,0,0,0.48)] flex items-end overscroll-contain"
+        onClick={onClose}
+      >
+        <section
+          className="w-[min(100%,var(--app-width))] mx-auto pb-[max(97px,env(safe-area-inset-bottom))] bg-white rounded-t-[12px] overflow-hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label={title}
+          onClick={(event) => event.stopPropagation()}
+        >
+          <div className="h-[46px] flex items-center justify-between px-[13px] text-[16px]">
+            <button className="text-[#606370]" onClick={onClose}>
+              취소
+            </button>
+            <button className="text-[#ffcc32]" onClick={onConfirm}>
+              {confirmLabel}
+            </button>
+          </div>
+          <div className="mt-[6px]">{children}</div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div

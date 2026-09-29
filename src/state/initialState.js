@@ -14,6 +14,11 @@ import { categories } from "../data/categories.js";
  * - cityPickerFrom : 지역 선택 화면을 연 화면("review" | "owner").
  *                    고르거나 뒤로 가면 이 화면으로 돌아가고, 고른 값도
  *                    이 화면의 필드(ownerInfo.city / ownerPage.city)에 들어간다.
+ * - modelPicker    : 차량 선택 흐름(브랜드 → 차종 → 세부 모델)의 진행 상황.
+ *                    from 은 연 화면("review" | "owner")이고, 세부 모델을 고르면
+ *                    그 화면의 필드(model / ownerPage.model)를 채우고 돌아간다.
+ * - ownerDateSheet : 차주가 화면의 구매 시기 시트. null 이면 닫힘.
+ *                    { year, month, day } 숫자이고 '확정' 전까지의 임시 값이다.
  * - ratings    : 평가 항목별 점수(0~5, 0.5 단위)
  */
 export const initialState = {
@@ -30,9 +35,10 @@ export const initialState = {
   // year / month 는 휠 항목 문자열 그대로다 ("2026년", "9월").
   datePicker: { open: false, year: "2026년", month: "9월" },
   cityPickerFrom: "review",
+  modelPicker: { from: "review", brand: null, series: null },
+  ownerDateSheet: null,
   ratings: Object.fromEntries(categories.map((category) => [category, 0])),
   comment: "",
-  brandQuery: "",
   news: { title: "", body: "" },
   question: { title: "", body: "" },
   longPost: { title: "", body: "" },
@@ -49,17 +55,21 @@ export const initialState = {
   // draft 는 '확정' 전까지의 임시 값이라, 닫기로 나가면 그대로 버려진다.
   saleSheet: null,
   ownerPage: {
+    // 차량 선택 결과. model 은 앱처럼 '차종 세부모델' 을 이은 표시 문자열이고,
+    // brand 는 구매 대리점 목록을 만들 때 쓴다.
     model: "",
+    brand: "",
     barePrice: "",
     totalPrice: "",
     purchaseTime: "",
     // 실제 앱은 현재 위치로 채워 두지만, 여기서는 목록에서 고르게 비워 둔다.
     city: "",
     note: "",
-    // '기타 정보' 안의 항목들. 이 묶음은 접었다 펼 수 있고, 기본은 펼침이다.
+    // '기타 정보' 안의 항목들. 이 묶음은 접었다 펼 수 있고, 앱처럼 기본은 접힘이다.
+    // 결제 방식도 앱 기본값(贷款 = 할부)을 따른다.
     payment: "할부",
     dealer: "",
-    extraOpen: true,
+    extraOpen: false,
   },
   energy: { title: "", body: "" },
 };

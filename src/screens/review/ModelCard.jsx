@@ -11,8 +11,9 @@
  * 인도 시기 / 구매 지역은 직접 입력이 아니라 readOnly 인풋을 눌러
  * 각각 모달(OPEN_DATE_PICKER)과 별도 화면(OPEN_CITY_PICKER)을 띄운다.
  *
- * 차량명·트림은 state.model 에서 읽는다. 트림은 아직 고르는 단계가 없어
- * 비어 있을 수 있고, 그때는 트림 줄을 생략한다.
+ * 차량은 '차량 추가'를 누르면 브랜드 → 차종 → 세부 모델 순으로 고른다
+ * (OPEN_MODEL_PICKER). 카드에는 state.model 의 차종(name)과 세부 모델(trim)을
+ * 보여 주고, 세부 모델이 비어 있으면 그 줄을 생략한다.
  */
 function ModelCard({ state, dispatch }) {
   if (!state.model) {
@@ -36,15 +37,17 @@ function ModelCard({ state, dispatch }) {
   return (
     <section className="mx-[9px] mb-[10px] px-[14px] pt-[18px] pb-[12px] rounded-[14px] bg-white">
       <div className="flex justify-between items-center pb-[16px] border-b border-[#e3e6ee]">
-        <div>
-          <h2 className="mb-[8px] text-[24px]">{state.model.name}</h2>
+        {/* 세부 모델 이름이 길어서(예: '2026년형 200만 대 기념 에디션 …') 좁은
+            폰에서는 줄어들 수 있어야 한다. min-w-0 이 없으면 카드 밖으로 밀린다. */}
+        <div className="min-w-0">
+          <h2 className="mb-[8px] text-[24px] truncate">{state.model.name}</h2>
           {state.model.trim && (
             <p className="m-0 max-w-[275px] text-[#6f7584] text-[17px] whitespace-nowrap overflow-hidden text-ellipsis">
               {state.model.trim}
             </p>
           )}
         </div>
-        <div className="text-[45px]">🚙</div>
+        <div className="flex-none text-[45px]">🚙</div>
       </div>
       <button
         className="w-full min-h-[64px] flex items-center gap-[12px] text-[#9ba1b0] text-left"

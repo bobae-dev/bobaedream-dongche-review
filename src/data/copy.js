@@ -91,6 +91,21 @@ export const cityPickerCopy = {
   noResult: "검색 결과가 없어요",
 };
 
+/** 차량 선택 흐름. 실제 앱의 '选择品牌 · 选择车系 · 选择车型 · 指导价' 를 옮긴 것. */
+export const modelPickerCopy = {
+  brandTitle: "브랜드 선택",
+  seriesTitle: "차종 선택",
+  trimTitle: "세부 모델 선택",
+  guidePrice: "권장가",
+  noPrice: "가격 정보 없음",
+};
+
+/** 구매 대리점 선택. 실제 앱의 '选择经销商 · 其他'. */
+export const dealerPickerCopy = {
+  title: "대리점 선택",
+  other: "기타",
+};
+
 export const energyCopy = {
   tab: "에너지",
   notice: "차량을 선택하면 아래에 연비·전비 입력란이 자동으로 표시돼요",

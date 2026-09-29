@@ -8,6 +8,28 @@ const WHEEL_HEIGHT = ROW_HEIGHT * VISIBLE_ROWS;
 const EDGE_PAD = ROW_HEIGHT * Math.floor(VISIBLE_ROWS / 2);
 
 /**
+ * 앱에는 모양이 조금 다른 휠이 두 가지 있다. 둘 다 실제 앱을 재서 맞췄다.
+ *   sale : 판매글 시트. 좌우 여백 36, 밴드 선 #f2f3f9, 글자 17px,
+ *          가운데서 멀수록 #797b86 → #c8c9ce
+ *   date : 날짜 시트(구매 시기). 좌우 여백 12, 밴드 선 #e6e6e6, 글자 18px,
+ *          가운데가 아닌 줄은 모두 옅은 회색 #bbbcbe → #c8c8ca
+ */
+const VARIANTS = {
+  sale: {
+    inset: "px-[36px]",
+    band: "left-[36px] right-[36px] border-[#f2f3f9]",
+    text: "text-[17px]",
+    tones: ["text-[#1f2129]", "text-[#797b86]", "text-[#c8c9ce]"],
+  },
+  date: {
+    inset: "px-[12px]",
+    band: "left-[12px] right-[12px] border-[#e6e6e6]",
+    text: "text-[18px]",
+    tones: ["text-[#1f2129]", "text-[#bbbcbe]", "text-[#c8c8ca]"],
+  },
+};
+
+/**
  * 가운데 줄에 있는 값이 선택되는 드럼식 선택기.
  *
  * 선택 표시는 항목마다 테두리를 주는 게 아니라, 휠 전체를 가로지르는
@@ -21,8 +43,10 @@ const EDGE_PAD = ROW_HEIGHT * Math.floor(VISIBLE_ROWS / 2);
  * @param columns   [{ key, items: string[], value: string }] 컬럼 정의
  * @param unit      오른쪽에 고정으로 붙는 단위 라벨 (주행거리의 'km'). 선택 대상이 아니다.
  * @param onChange  (columnKey, value)
+ * @param variant   "sale"(기본) | "date" — 위 VARIANTS 참고
  */
-function WheelPicker({ columns, unit, onChange }) {
+function WheelPicker({ columns, unit, onChange, variant = "sale" }) {
+  const look = VARIANTS[variant];
   return (
     <div
       className="relative overflow-hidden"
@@ -31,16 +55,17 @@ function WheelPicker({ columns, unit, onChange }) {
     >
       {/* 선택 밴드 — 컬럼 위에 겹쳐 그려서 가로로 끊김 없이 이어진다. */}
       <div
-        className="absolute left-[36px] right-[36px] pointer-events-none border-y border-[#f2f3f9]"
+        className={`absolute pointer-events-none border-y ${look.band}`}
         style={{ top: EDGE_PAD, height: ROW_HEIGHT }}
         aria-hidden="true"
       ></div>
-      <div className="h-full flex px-[36px]">
+      <div className={`h-full flex ${look.inset}`}>
         {columns.map((column) => (
           <WheelColumn
             key={column.key}
             items={column.items}
             value={column.value}
+            look={look}
             onSelect={(value) => onChange(column.key, value)}
           />
         ))}
@@ -59,7 +84,7 @@ function WheelPicker({ columns, unit, onChange }) {
   );
 }
 
-function WheelColumn({ items, value, onSelect }) {
+function WheelColumn({ items, value, look, onSelect }) {
   const listRef = useRef(null);
   const settleRef = useRef(null);
   const index = Math.max(0, items.indexOf(value));
@@ -97,16 +122,11 @@ function WheelColumn({ items, value, onSelect }) {
     >
       {items.map((item, itemIndex) => {
         const distance = Math.abs(itemIndex - index);
-        const tone =
-          distance === 0
-            ? "text-[#1f2129]"
-            : distance === 1
-              ? "text-[#797b86]"
-              : "text-[#c8c9ce]";
+        const tone = look.tones[Math.min(distance, 2)];
         return (
           <button
             key={item}
-            className={`block w-full [scroll-snap-align:center] text-[17px] ${tone}`}
+            className={`block w-full [scroll-snap-align:center] ${look.text} ${tone}`}
             style={{ height: ROW_HEIGHT }}
             aria-current={distance === 0}
             onClick={() => onSelect(item)}

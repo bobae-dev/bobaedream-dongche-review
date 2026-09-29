@@ -7,9 +7,12 @@
  *                    브라우저 뒤로가기(HISTORY_BACK)가 모두 이걸 따른다.
  *   - historyDepth : 브라우저 히스토리에 쌓아 둘 단계 수 (useHistoryBack)
  *
- * 리뷰 화면('review')이 뿌리다. 탭 화면과 차량 선택은 리뷰 화면의 자식이고,
- * 지역 선택은 연 화면(state.cityPickerFrom)의 자식이다. 탭끼리 옮겨 다녀도
- * 부모는 그대로 리뷰 화면이라 단계가 늘지 않는다.
+ * 리뷰 화면('review')이 뿌리다. 탭 화면은 리뷰 화면의 자식이다. 탭끼리
+ * 옮겨 다녀도 부모는 그대로 리뷰 화면이라 단계가 늘지 않는다.
+ * 선택 화면은 연 화면의 자식이다.
+ *   지역 선택     ← state.cityPickerFrom
+ *   브랜드 선택   ← state.modelPicker.from  → 차종 선택 → 세부 모델 선택
+ *   대리점 선택   ← 차주가
  */
 
 /**
@@ -30,8 +33,20 @@ export const TABS = [
 /** 뒤로 가면 돌아갈 화면. 뿌리(리뷰 화면)면 null. */
 export function parentScreen(state, screen = state.screen) {
   if (screen === "review") return null;
-  if (screen === "city-picker") return state.cityPickerFrom;
-  return "review";
+  switch (screen) {
+    case "city-picker":
+      return state.cityPickerFrom;
+    case "brand-picker":
+      return state.modelPicker.from;
+    case "series-picker":
+      return "brand-picker";
+    case "trim-picker":
+      return "series-picker";
+    case "dealer-picker":
+      return "owner";
+    default:
+      return "review";
+  }
 }
 
 /** 뿌리에서 몇 단계 들어와 있는지. 예: 차주가 → 지역 선택 = 2 */
@@ -45,6 +60,7 @@ export function screenDepth(state, screen = state.screen) {
  * reducer 의 HISTORY_BACK 은 이 값을 정확히 1 줄이는 동작이어야 한다.
  */
 export function historyDepth(state) {
-  const overlayDepth = state.datePicker.open || state.saleSheet ? 1 : 0;
+  const overlayDepth =
+    state.datePicker.open || state.saleSheet || state.ownerDateSheet ? 1 : 0;
   return screenDepth(state) + overlayDepth;
 }
