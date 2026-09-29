@@ -58,28 +58,35 @@ function OwnerScreen({
               ?
             </span>
           </h2>
-          <p className="my-[12px] flex items-center gap-[5px] text-[#2c3038] text-[15px] whitespace-nowrap">
+          {/* 보상 안내 두 줄은 한 줄로 묶어 두면(nowrap) 번역문이 원문보다 길어서
+              좁은 폰(360px)에서 배지가 화면 밖으로 나가고 페이지 전체가 가로로
+              밀린다. 문장은 줄바꿈되게 두고, 배지만 쪼개지지 않게 묶는다. */}
+          <p className="my-[12px] flex items-start gap-[5px] text-[#2c3038] text-[15px] leading-[22px]">
             <RewardCheck />
-            차주 인증이 완료되면, 차종별 친구들에게
-            {/* 빨간 리본 배지 — 오른쪽 끝을 접은 모양이라 clip-path 로 깎는다. */}
-            <span
-              className="inline-flex items-center gap-[3px] pl-[8px] pr-[12px] py-[2px] bg-[linear-gradient(95deg,#ff7a2f,#ef2f2f)] text-white text-[13px] font-bold"
-              style={{
-                clipPath:
-                  "polygon(0 0, 100% 0, calc(100% - 7px) 50%, 100% 100%, 0 100%)",
-              }}
-            >
-              ⚡{ownerCopy.rewardContribution}
+            <span className="min-w-0">
+              차주 인증이 완료되면, 차종별 친구들에게{" "}
+              {/* 빨간 리본 배지 — 오른쪽 끝을 접은 모양이라 clip-path 로 깎는다. */}
+              <span
+                className="inline-flex items-center gap-[3px] pl-[8px] pr-[12px] py-[2px] align-middle whitespace-nowrap bg-[linear-gradient(95deg,#ff7a2f,#ef2f2f)] text-white text-[13px] leading-[18px] font-bold"
+                style={{
+                  clipPath:
+                    "polygon(0 0, 100% 0, calc(100% - 7px) 50%, 100% 100%, 0 100%)",
+                }}
+              >
+                ⚡{ownerCopy.rewardContribution}
+              </span>
             </span>
           </p>
-          <p className="my-[12px] flex items-center gap-[5px] text-[#2c3038] text-[15px] whitespace-nowrap">
+          <p className="my-[12px] flex items-start gap-[5px] text-[#2c3038] text-[15px] leading-[22px]">
             <RewardCheck />
-            구매 영수증 인증이 완료되면,
-            <span className="inline-flex items-center gap-[4px] text-[#2c3038] text-[16px] font-bold">
-              <i className="w-[18px] h-[18px] inline-flex items-center justify-center rounded-full bg-[linear-gradient(#ffd977,#eda32b)] text-white text-[11px] not-italic">
-                ₩
-              </i>
-              {ownerCopy.rewardCoin}
+            <span className="min-w-0">
+              구매 영수증 인증이 완료되면,{" "}
+              <span className="inline-flex items-center gap-[4px] align-middle whitespace-nowrap text-[#2c3038] text-[16px] font-bold">
+                <i className="w-[18px] h-[18px] inline-flex items-center justify-center rounded-full bg-[linear-gradient(#ffd977,#eda32b)] text-white text-[11px] not-italic">
+                  ₩
+                </i>
+                {ownerCopy.rewardCoin}
+              </span>
             </span>
           </p>
           <InvoiceUploadBox
@@ -197,7 +204,7 @@ function OwnerScreen({
 /** 보상 안내 줄머리의 노란 원형 체크. */
 function RewardCheck() {
   return (
-    <b className="inline-flex w-[20px] h-[20px] flex-none items-center justify-center rounded-full bg-[#ffca28] text-white text-[13px]">
+    <b className="inline-flex w-[20px] h-[20px] mt-[1px] flex-none items-center justify-center rounded-full bg-[#ffca28] text-white text-[13px]">
       ✓
     </b>
   );

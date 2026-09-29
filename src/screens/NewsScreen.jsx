@@ -157,10 +157,10 @@ function NewsScreen({
             <span className="mr-[3px] italic text-[17px]">AI</span>
             {newsCopy.aiHelp}
           </button>
-          <p className="mt-[14px] text-[#9fa5b5] text-[15px] whitespace-nowrap">
+          <p className="mt-[14px] text-[#9fa5b5] text-[15px]">
             <span className="mr-[4px] text-[#9ba1b0] text-[20px]">♧</span>
             {newsCopy.shareHint}
-            <button type="button" className="text-[#2451c8]">
+            <button type="button" className="text-[#2451c8] whitespace-nowrap">
               {newsCopy.shareLink}
             </button>
           </p>

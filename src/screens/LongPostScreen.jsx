@@ -26,7 +26,7 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
         onBack={onBack}
       />
       <main className="min-h-[calc(100dvh-58px-150px)] px-[9px] pt-[10px] pb-[calc(170px_+_env(safe-area-inset-bottom))] bg-[#eef1f8]">
-        <section className="rounded-[14px] bg-white h-[355px] px-[17px] pt-[18px] pb-[15px]">
+        <section className="rounded-[14px] bg-white min-h-[355px] px-[17px] pt-[18px] pb-[15px]">
           <input
             className="w-full border-0 outline-none bg-transparent text-[#343741] h-[42px] pb-[10px] border-b border-[#e2e5ec] text-[21px] font-bold placeholder:text-[#c8ccd8] placeholder:opacity-100"
             value={state.longPost.title}
@@ -53,10 +53,10 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
               })
             }
           />
-          <p className="mt-[7px] text-[#9fa5b5] text-[15px] whitespace-nowrap">
+          <p className="mt-[7px] text-[#9fa5b5] text-[15px]">
             <span className="mr-[4px] text-[20px]">♧</span>
             {longPostCopy.shareHint}
-            <button type="button" className="text-[#2451c8]">
+            <button type="button" className="text-[#2451c8] whitespace-nowrap">
               {longPostCopy.shareLink}
             </button>
           </p>
