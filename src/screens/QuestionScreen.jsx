@@ -9,6 +9,13 @@ import {
   DRAG_SCROLLER_CLASS,
   useDragScroll,
 } from "../hooks/useDragScroll.js";
+import {
+  CloseIcon,
+  HashIcon,
+  PhotoIcon,
+  PlayTriangleIcon,
+  VideoIcon,
+} from "../components/icons.jsx";
 
 /**
  * 질문 작성 화면.
@@ -73,9 +80,7 @@ function QuestionScreen({
             className="flex-[0_0_96px] h-[92px] border border-dashed border-[#d8dce7] rounded-[9px] flex flex-col items-center justify-center gap-[8px] text-[#9ca2b2]"
             onClick={() => openPicker(photoInputRef)}
           >
-            <span className="inline-flex items-center justify-center h-[28px] text-[34px] leading-none">
-              ▱
-            </span>
+            <PhotoIcon size={28} />
             <strong className="text-[14px] font-medium">
               {questionCopy.photoAction}
             </strong>
@@ -84,9 +89,7 @@ function QuestionScreen({
             className="flex-[0_0_96px] h-[92px] border border-dashed border-[#d8dce7] rounded-[9px] flex flex-col items-center justify-center gap-[8px] text-[#9ca2b2]"
             onClick={() => openPicker(videoInputRef)}
           >
-            <span className="inline-flex items-center justify-center h-[28px] text-[32px] leading-none">
-              ▻
-            </span>
+            <VideoIcon size={28} />
             <strong className="text-[14px] font-medium">
               {questionCopy.videoAction}
             </strong>
@@ -108,8 +111,9 @@ function QuestionScreen({
                     playsInline
                     aria-label={item.name}
                   />
-                  <span className="absolute left-0 bottom-0 px-[5px] py-[2px] bg-[rgba(0,0,0,0.6)] text-white text-[11px]">
-                    ▶ 영상
+                  <span className="absolute left-0 bottom-0 flex items-center gap-[2px] px-[5px] py-[2px] bg-[rgba(0,0,0,0.6)] text-white text-[11px]">
+                    <PlayTriangleIcon size={8} />
+                    영상
                   </span>
                 </>
               ) : (
@@ -121,14 +125,14 @@ function QuestionScreen({
                 />
               )}
               <button
-                className="absolute top-[3px] right-[3px] w-[22px] h-[22px] rounded-full bg-[rgba(0,0,0,0.6)] text-white text-[17px] leading-[18px]"
+                className="absolute top-[3px] right-[3px] w-[22px] h-[22px] rounded-full bg-[rgba(0,0,0,0.6)] flex items-center justify-center text-white"
                 aria-label={`${item.name} 삭제`}
                 onClick={() => {
                   if (shouldIgnoreStripClick()) return;
                   onRemoveAttachment(item.id);
                 }}
               >
-                ×
+                <CloseIcon size={12} weight={2.6} />
               </button>
             </div>
           ))}
@@ -181,7 +185,7 @@ function QuestionScreen({
           <p className="m-0 text-[#9da3b2] text-[14px]">{bodyLength}/2000</p>
         </section>
         <ChipRow
-          icon="#"
+          icon={<HashIcon size={20} />}
           title={questionCopy.topicTitle}
           items={SHARED_TOPICS}
         />

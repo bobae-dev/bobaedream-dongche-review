@@ -1,6 +1,7 @@
 import { useEffect, useEffectEvent } from "react";
 
 import { useBodyScrollLock } from "../hooks/useBodyScrollLock.js";
+import { CloseIcon } from "./icons.jsx";
 
 /**
  * 화면 아래에서 올라오는 바텀시트의 공통 껍데기.
@@ -99,11 +100,11 @@ function BottomSheet({
         <div className="relative h-[48px] flex items-center justify-center">
           <strong className="text-[17px] text-[#1f2129]">{title}</strong>
           <button
-            className="absolute right-[16px] text-[22px] leading-none text-[#1f2129]"
+            className="absolute right-[14px] p-[2px] text-[#1f2129]"
             aria-label="닫기"
             onClick={onClose}
           >
-            ✕
+            <CloseIcon size={20} />
           </button>
         </div>
         {children}

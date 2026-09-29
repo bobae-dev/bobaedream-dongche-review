@@ -2,6 +2,14 @@ import SourceNavigation from "../components/SourceNavigation.jsx";
 import { ownerCopy } from "../data/copy.js";
 import InvoiceUploadBox from "./owner/InvoiceUploadBox.jsx";
 import PurchaseDateSheet from "./owner/PurchaseDateSheet.jsx";
+import {
+  BoltIcon,
+  CaretIcon,
+  CheckCircleIcon,
+  ChevronRightIcon,
+  CoinIcon,
+  HelpIcon,
+} from "../components/icons.jsx";
 
 /**
  * 차주가 화면 — 차주 인증 및 구매 정보 등록.
@@ -75,8 +83,8 @@ function OwnerScreen({
         <section className="rounded-[14px] px-[14px] py-[17px] bg-[linear-gradient(#fff6de_0_30%,#fff_62%)]">
           <h2 className="mb-[14px] text-[22px] relative after:content-[''] after:block after:w-[78px] after:h-[4px] after:mt-[-6px] after:bg-[#ffc928]">
             {ownerCopy.rewardTitle}
-            <span className="inline-flex items-center justify-center w-[20px] h-[20px] ml-[5px] border-2 border-[#9ba1b0] rounded-full text-[#9ba1b0] text-[13px] align-[2px]">
-              ?
+            <span className="ml-[5px] text-[#9ba1b0] align-[-2px]">
+              <HelpIcon size={20} />
             </span>
           </h2>
           {/* 보상 안내 두 줄은 한 줄로 묶어 두면(nowrap) 번역문이 원문보다 길어서
@@ -94,7 +102,8 @@ function OwnerScreen({
                     "polygon(0 0, 100% 0, calc(100% - 7px) 50%, 100% 100%, 0 100%)",
                 }}
               >
-                ⚡{ownerCopy.rewardContribution}
+                <BoltIcon size={14} />
+                {ownerCopy.rewardContribution}
               </span>
             </span>
           </p>
@@ -103,9 +112,7 @@ function OwnerScreen({
             <span className="min-w-0">
               구매 영수증 인증이 완료되면,{" "}
               <span className="inline-flex items-center gap-[4px] align-middle whitespace-nowrap text-[#2c3038] text-[16px] font-bold">
-                <i className="w-[18px] h-[18px] inline-flex items-center justify-center rounded-full bg-[linear-gradient(#ffd977,#eda32b)] text-white text-[11px] not-italic">
-                  ₩
-                </i>
+                <CoinIcon size={18} />
                 {ownerCopy.rewardCoin}
               </span>
             </span>
@@ -140,7 +147,9 @@ function OwnerScreen({
                 >
                   {info[field] || ownerCopy.selectHint}
                 </span>
-                <b className="text-[#aeb4c2] text-[25px] font-normal">›</b>
+                <span className="text-[#aeb4c2]">
+                  <ChevronRightIcon size={16} />
+                </span>
               </button>
             ) : (
               <label
@@ -182,9 +191,9 @@ function OwnerScreen({
             <strong className="text-[20px]">{ownerCopy.otherInfo}</strong>
             <span className="text-[#aeb4c2] text-[15px]">
               {ownerCopy.otherInfoHint}
-              <b className="ml-[6px] font-normal">
-                {info.extraOpen ? "▲" : "▼"}
-              </b>
+              <span className="ml-[6px] text-[#1f2129] align-[1px]">
+                <CaretIcon size={11} up={info.extraOpen} />
+              </span>
             </span>
           </button>
           {info.extraOpen && (
@@ -225,7 +234,9 @@ function OwnerScreen({
                 >
                   {info.dealer || ownerCopy.selectHint}
                 </span>
-                <b className="text-[#aeb4c2] text-[25px] font-normal">›</b>
+                <span className="text-[#aeb4c2]">
+                  <ChevronRightIcon size={16} />
+                </span>
               </button>
             </div>
           )}
@@ -257,9 +268,9 @@ function today() {
 /** 보상 안내 줄머리의 노란 원형 체크. */
 function RewardCheck() {
   return (
-    <b className="inline-flex w-[20px] h-[20px] mt-[1px] flex-none items-center justify-center rounded-full bg-[#ffca28] text-white text-[13px]">
-      ✓
-    </b>
+    <span className="mt-[2px]">
+      <CheckCircleIcon size={18} />
+    </span>
   );
 }
 

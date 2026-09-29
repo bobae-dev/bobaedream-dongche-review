@@ -3,9 +3,17 @@ import ComposerFooter from "../components/ComposerFooter.jsx";
 import SourceNavigation from "../components/SourceNavigation.jsx";
 import { longPostCopy } from "../data/copy.js";
 import { SHARED_TOPICS } from "../data/topics.js";
+import {
+  BulbIcon,
+  EmojiIcon,
+  HashIcon,
+  PhotoIcon,
+  PriceIcon,
+  WrenchIcon,
+} from "../components/icons.jsx";
 
-/** 하단 도구 버튼 라벨 → 아이콘 문자. 목록에 없는 라벨은 '⌕' 로 떨어진다. */
-const LONG_POST_ICONS = { 표정: "☺", 사진: "▱", 가격: "￥" };
+/** 하단 도구 버튼 라벨 → 아이콘. 목록에 없는 라벨은 렌치(정비)로 떨어진다. */
+const LONG_POST_ICONS = { 표정: EmojiIcon, 사진: PhotoIcon, 가격: PriceIcon };
 
 /**
  * 긴 글 작성 화면.
@@ -52,7 +60,9 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
             }
           />
           <p className="mt-[7px] text-[#9fa5b5] text-[15px]">
-            <span className="mr-[4px] text-[20px]">♧</span>
+            <span className="mr-[4px] align-[-3px]">
+              <BulbIcon size={18} />
+            </span>
             {longPostCopy.shareHint}
             <button type="button" className="text-[#2451c8] whitespace-nowrap">
               {longPostCopy.shareLink}
@@ -60,7 +70,7 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
           </p>
         </section>
         <ChipRow
-          icon="#"
+          icon={<HashIcon size={20} />}
           title={longPostCopy.topicTitle}
           items={SHARED_TOPICS}
         />
@@ -72,17 +82,22 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
         >
           {longPostCopy.bottomActions.map((label) => (
             <button
-              className="text-inherit leading-none min-w-[34px] text-[28px] font-bold"
+              className="text-inherit min-w-[34px] flex justify-center"
               aria-label={label}
               key={label}
             >
-              {LONG_POST_ICONS[label] ?? "⌕"}
+              <ToolIcon label={label} />
             </button>
           ))}
         </nav>
       </ComposerFooter>
     </>
   );
+}
+
+function ToolIcon({ label }) {
+  const Icon = LONG_POST_ICONS[label] ?? WrenchIcon;
+  return <Icon size={28} />;
 }
 
 export default LongPostScreen;

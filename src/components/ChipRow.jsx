@@ -2,6 +2,7 @@ import {
   DRAG_SCROLLER_CLASS,
   useDragScroll,
 } from "../hooks/useDragScroll.js";
+import { PlayTriangleIcon } from "./icons.jsx";
 
 /**
  * 제목 + 가로 칩 목록으로 이루어진 한 줄짜리 카드.
@@ -17,7 +18,7 @@ import {
  * 드래그 끝에 따라오는 클릭을 useDragScroll 의 shouldIgnoreClick() 으로
  * 걸러 줘야 한다.
  *
- * @param icon   제목 왼쪽 아이콘 문자
+ * @param icon   제목 왼쪽 아이콘 (components/icons.jsx 의 아이콘 요소)
  * @param title  제목. 접근성 라벨로도 그대로 쓴다.
  * @param items  칩으로 그릴 문자열 배열
  */
@@ -34,9 +35,9 @@ function ChipRow({ icon, title, items }) {
       aria-label={title}
     >
       <button className="flex-[0_0_91px] flex items-center gap-[5px] p-0 text-[#252830] whitespace-nowrap">
-        <span className="text-[24px] leading-none">{icon}</span>
+        {icon}
         <strong className="text-[16px]">{title}</strong>
-        <b className="text-[18px] font-normal">›</b>
+        <PlayTriangleIcon size={9} />
       </button>
       <div
         ref={chipsRef}

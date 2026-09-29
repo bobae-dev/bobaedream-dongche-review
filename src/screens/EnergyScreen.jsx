@@ -1,5 +1,11 @@
 import SourceNavigation from "../components/SourceNavigation.jsx";
 import { energyCopy } from "../data/copy.js";
+import {
+  ChevronRightIcon,
+  InfoIcon,
+  PhotoIcon,
+  PlusIcon,
+} from "../components/icons.jsx";
 
 /**
  * 에너지(연비·전비) 작성 화면.
@@ -22,12 +28,14 @@ function EnergyScreen({ state, dispatch, onNavigate, onBack }) {
       />
       <main className="min-h-[calc(100dvh-58px)] px-[9px] pt-[9px] pb-[170px] bg-[#eef1f8]">
         <p className="mx-[5px] mb-[13px] text-[#8f96a8] text-[16px]">
-          <span className="mr-[5px] text-[20px]">ⓘ</span>
+          <span className="mr-[5px] align-[-3px]">
+            <InfoIcon size={18} />
+          </span>
           {energyCopy.notice}
         </p>
         <section className="rounded-[14px] bg-white h-[126px] px-[9px] py-[10px] flex gap-[8px] overflow-hidden">
           <button className="flex-[0_0_96px] h-[106px] border border-dashed border-[#d8dce7] text-[#9ca2b2] flex flex-col items-center justify-center gap-[5px]">
-            <strong className="text-[39px] font-light leading-none">＋</strong>
+            <PlusIcon size={34} weight={1.4} />
             <span className="text-[13px]">{energyCopy.photoAction}</span>
           </button>
           <div className="relative flex-[0_0_96px] h-[106px] overflow-hidden rounded-[8px] bg-[linear-gradient(#66777a_0_36%,#b9c2c3_37%_48%,#41494f_49%)] after:content-[''] after:absolute after:left-[10px] after:right-[10px] after:bottom-[15px] after:h-[28px] after:rounded-full after:bg-[linear-gradient(170deg,transparent_45%,#d6dce0_46%_55%,transparent_56%)] after:opacity-80">
@@ -73,12 +81,14 @@ function EnergyScreen({ state, dispatch, onNavigate, onBack }) {
           />
         </section>
         <button className="rounded-[14px] bg-white w-full h-[56px] mt-[10px] px-[14px] flex items-center gap-[8px] text-[#242731] text-left">
-          <span className="text-[22px]">▱</span>
+          <PhotoIcon size={22} />
           <strong className="flex-1 text-[17px]">
             {energyCopy.bindVehicle}
             <em className="ml-[3px]">*</em>
           </strong>
-          <b className="text-[25px] font-normal">›</b>
+          <span className="text-[#aeb4c2]">
+            <ChevronRightIcon size={18} />
+          </span>
         </button>
       </main>
     </>

@@ -3,6 +3,13 @@ import StarRating from "../../components/StarRating.jsx";
 import { ratingDescription, reviewCategories } from "../../state/selectors.js";
 import ModelCard from "./ModelCard.jsx";
 import PhotoCard from "./PhotoCard.jsx";
+import {
+  CloseIcon,
+  DiamondIcon,
+  InfoIcon,
+  SendIcon,
+  SwapIcon,
+} from "../../components/icons.jsx";
 
 /**
  * 리뷰 작성 화면 — 앱의 기본 화면(initialState.screen === "review").
@@ -47,25 +54,31 @@ function ReviewScreen({
       />
       <header className="h-[76px] flex items-center bg-[#f5f6fb]">
         <button
-          className="w-[52px] text-[42px] leading-none text-[#11131a]"
+          className="w-[52px] flex items-center justify-center text-[#11131a]"
           aria-label="닫기"
         >
-          ×
+          <CloseIcon size={28} weight={2.2} />
         </button>
         <strong className="text-[27px] ml-[7px]">리뷰 작성</strong>
-        <span className="ml-[14px] text-[30px]">⇄</span>
-        <button className="ml-auto mr-[10px] px-[20px] py-[14px] rounded-[12px] bg-[#ffca28] text-[#17191e] text-[18px] font-bold">
-          ◁ 게시
+        <span className="ml-[12px] text-[#11131a]">
+          <SwapIcon size={26} />
+        </span>
+        <button className="ml-auto mr-[10px] flex items-center gap-[4px] px-[20px] py-[14px] rounded-[12px] bg-[#ffca28] text-[#17191e] text-[18px] font-bold">
+          <SendIcon size={20} />
+          게시
         </button>
       </header>
       <section className="h-[112px] pt-[4px] px-[16px] text-[#aeb3c2]">
         <div className="inline-block p-[8px] border border-[#f1ba25] rounded-[5px] text-[#777d8c] bg-[#fffdf4] text-[13px]">
           300자 이상 작성하면 더 많은 사람에게 노출돼요
         </div>
-        <div className="flex items-center gap-[8px] mt-[12px] text-[#dfe3ee]">
-          <span className="text-[#333b48] text-[20px]">▰</span>
+        <div className="h-[30px] flex items-center gap-[8px] mt-[12px] text-[#dfe3ee]">
+          <i
+            className="w-[14px] h-[10px] rounded-[2px] bg-[#333b48]"
+            aria-hidden="true"
+          ></i>
           <span className="h-[8px] flex-1 bg-[repeating-linear-gradient(135deg,#e0e4ef_0_9px,transparent_9px_16px)]"></span>
-          <span className="text-[22px]">♢</span>
+          <DiamondIcon size={18} />
         </div>
         <div className="flex justify-between text-[12px]">
           <span>리뷰 선정 기회</span>
@@ -81,12 +94,15 @@ function ReviewScreen({
               <b className="text-[#ec4b2d] text-[23px] ml-[5px]">{average}점</b>
             )}
           </h2>
-          <button className="text-[#a5abba] text-[16px]">ⓘ 점수 안내</button>
+          <button className="flex items-center gap-[3px] text-[#a5abba] text-[16px]">
+            <InfoIcon size={16} />
+            점수 안내
+          </button>
         </div>
         <div className="px-[10px] py-[15px] bg-[#fff9e8] text-[#474a52] flex justify-between text-[14px] mb-[12px]">
           점수는 어떻게 매기면 좋을까요? 한 번에 쉽게 작성해 보세요!{" "}
-          <button aria-label="안내 닫기" className="text-[25px]">
-            ×
+          <button aria-label="안내 닫기" className="text-[#474a52]">
+            <CloseIcon size={16} />
           </button>
         </div>
         <div>
@@ -136,14 +152,15 @@ function ReviewScreen({
             <b className="text-[#ef8421] text-[17px]">30</b>자 이상 작성해야
             게시할 수 있어요
           </span>
-          <button className="text-[#3156bd] text-[16px]">
-            ⓘ 리뷰 작성 가이드
+          <button className="flex items-center gap-[3px] text-[#3156bd] text-[16px]">
+            <InfoIcon size={16} />
+            리뷰 작성 가이드
           </button>
         </div>
         <div className="mt-[14px] px-[10px] py-[14px] flex justify-between bg-[#fff9e8] text-[#4a4c55] text-[14px]">
           작성 가이드를 참고하면 더 좋은 리뷰를 쉽게 완성할 수 있어요!{" "}
-          <button aria-label="안내 닫기" className="text-[22px]">
-            ×
+          <button aria-label="안내 닫기" className="text-[#4a4c55]">
+            <CloseIcon size={16} />
           </button>
         </div>
       </section>
@@ -152,8 +169,9 @@ function ReviewScreen({
         onCoverChange={onCoverChange}
         onRemoveCover={onRemoveCover}
       />
-      <div className="mx-[20px] mb-[28px] text-[#f04b31] text-[17px]">
-        ⓘ 차량 사진을 추가해 주세요
+      <div className="mx-[20px] mb-[28px] flex items-center gap-[4px] text-[#f04b31] text-[17px]">
+        <InfoIcon size={17} />
+        차량 사진을 추가해 주세요
       </div>
     </>
   );

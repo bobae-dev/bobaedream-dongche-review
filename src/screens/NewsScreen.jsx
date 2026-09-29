@@ -9,6 +9,14 @@ import {
   DRAG_SCROLLER_CLASS,
   useDragScroll,
 } from "../hooks/useDragScroll.js";
+import {
+  AiImageIcon,
+  BulbIcon,
+  CloseIcon,
+  HashIcon,
+  PinIcon,
+  PlusIcon,
+} from "../components/icons.jsx";
 
 /**
  * 소식 작성 화면.
@@ -67,7 +75,7 @@ function NewsScreen({
           aria-label="콘텐츠 도구"
         >
           <button className="flex-[0_0_96px] h-[92px] border border-dashed rounded-[10px] flex flex-col items-center justify-center gap-[4px] text-[13px] whitespace-nowrap border-[#c7bdfb] bg-[linear-gradient(145deg,#fff8ff,#f0f7ff)] text-[#6564e8]">
-            <span className="text-[#6b64ee] text-[30px] leading-none">✦</span>
+            <AiImageIcon size={30} />
             <strong className="text-[13px] font-medium">
               {newsCopy.imageCard}
             </strong>
@@ -79,8 +87,8 @@ function NewsScreen({
               fileInputRef.current?.click();
             }}
           >
-            <span className="text-[34px] leading-none text-[#a0a5b5] font-light">
-              ＋
+            <span className="text-[#a0a5b5]">
+              <PlusIcon size={30} weight={1.4} />
             </span>
             <strong className="text-[13px] font-medium text-[#b27d16]">
               {newsCopy.imageCardAction}
@@ -105,14 +113,14 @@ function NewsScreen({
                 draggable={false}
               />
               <button
-                className="absolute top-[3px] right-[3px] w-[22px] h-[22px] rounded-full bg-[rgba(0,0,0,0.6)] text-white text-[17px] leading-[18px]"
+                className="absolute top-[3px] right-[3px] w-[22px] h-[22px] rounded-full bg-[rgba(0,0,0,0.6)] flex items-center justify-center text-white"
                 aria-label={`${photo.name} 삭제`}
                 onClick={() => {
                   if (shouldIgnoreStripClick()) return;
                   onRemovePhoto(photo.id);
                 }}
               >
-                ×
+                <CloseIcon size={12} weight={2.6} />
               </button>
             </div>
           ))}
@@ -158,7 +166,9 @@ function NewsScreen({
             {newsCopy.aiHelp}
           </button>
           <p className="mt-[14px] text-[#9fa5b5] text-[15px]">
-            <span className="mr-[4px] text-[#9ba1b0] text-[20px]">♧</span>
+            <span className="mr-[4px] text-[#9ba1b0] align-[-3px]">
+              <BulbIcon size={18} />
+            </span>
             {newsCopy.shareHint}
             <button type="button" className="text-[#2451c8] whitespace-nowrap">
               {newsCopy.shareLink}
@@ -166,11 +176,15 @@ function NewsScreen({
           </p>
         </section>
         <ChipRow
-          icon="⌖"
+          icon={<PinIcon size={20} />}
           title={newsCopy.checkInTitle}
           items={NEWS_PLACES}
         />
-        <ChipRow icon="#" title={newsCopy.topicTitle} items={SHARED_TOPICS} />
+        <ChipRow
+          icon={<HashIcon size={20} />}
+          title={newsCopy.topicTitle}
+          items={SHARED_TOPICS}
+        />
       </main>
       <ComposerFooter vehicleLabel={newsCopy.vehicle} />
     </>

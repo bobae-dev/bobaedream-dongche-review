@@ -5,6 +5,7 @@ import {
   useDragScroll,
 } from "../hooks/useDragScroll.js";
 import { TABS } from "../state/screens.js";
+import { ChevronLeftIcon, SendIcon } from "./icons.jsx";
 
 /**
  * 화면 상단에 고정되는 가로 스크롤 탭 바.
@@ -50,11 +51,11 @@ function SourceNavigation({ screen, onNavigate, onBack }) {
       aria-label="주요 메뉴"
     >
       <button
-        className="flex-[0_0_34px] text-[36px] leading-none text-[#171a22]"
+        className="flex-[0_0_34px] flex items-center justify-center text-[#171a22]"
         aria-label="뒤로"
         onClick={onBack}
       >
-        ‹
+        <ChevronLeftIcon size={24} />
       </button>
       <div
         ref={tabsRef}
@@ -80,8 +81,9 @@ function SourceNavigation({ screen, onNavigate, onBack }) {
           </button>
         ))}
       </div>
-      <button className="flex-none px-[9px] py-[8px] rounded-[8px] bg-[#ffca28] text-[#17191e] text-[12px] font-bold whitespace-nowrap">
-        ➤ 게시
+      <button className="flex-none flex items-center gap-[3px] px-[9px] py-[8px] rounded-[8px] bg-[#ffca28] text-[#17191e] text-[12px] font-bold whitespace-nowrap">
+        <SendIcon size={14} />
+        게시
       </button>
     </nav>
   );

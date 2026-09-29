@@ -1,5 +1,14 @@
 import { saleCopy } from "../data/copy.js";
 import SaleFieldSheet from "./sale/SaleFieldSheet.jsx";
+import {
+  ChevronRightIcon,
+  CloseIcon,
+  PhotoIcon,
+  PinIcon,
+  PlusIcon,
+  SendIcon,
+  SwapIcon,
+} from "../components/icons.jsx";
 
 /**
  * 판매글 작성 화면.
@@ -32,16 +41,19 @@ function SaleScreen({ state, dispatch, onBack }) {
     <main className="min-h-dvh px-[9px] pb-[24px] bg-[#eef1f8]">
       <header className="h-[76px] flex items-center bg-[#f5f6fb]">
         <button
-          className="w-[45px] text-[#171a22] text-[42px] leading-none"
+          className="w-[45px] flex items-center text-[#171a22]"
           aria-label="닫기"
           onClick={onBack}
         >
-          ×
+          <CloseIcon size={28} weight={2.2} />
         </button>
         <strong className="text-[27px]">{saleCopy.header}</strong>
-        <span className="ml-[14px] text-[29px]">⇄</span>
-        <button className="ml-auto px-[18px] py-[13px] rounded-[11px] bg-[#ffedba] text-[#cbd0dc] text-[18px] font-bold">
-          ◁ {saleCopy.publish}
+        <span className="ml-[12px] text-[#171a22]">
+          <SwapIcon size={26} />
+        </span>
+        <button className="ml-auto flex items-center gap-[4px] px-[18px] py-[13px] rounded-[11px] bg-[#ffedba] text-[#cbd0dc] text-[18px] font-bold">
+          <SendIcon size={20} />
+          {saleCopy.publish}
         </button>
       </header>
       <p className="mx-[5px] my-[14px] text-[#979dac] text-[19px] leading-[1.45]">
@@ -51,18 +63,18 @@ function SaleScreen({ state, dispatch, onBack }) {
       </p>
       <section className="rounded-[14px] bg-white h-[112px] px-[9px] py-[10px]">
         <button className="w-[96px] h-[92px] border border-dashed border-[#d8dce7] flex flex-col items-center justify-center gap-[5px] text-[#9ca2b2]">
-          <strong className="text-[39px] font-light leading-none">＋</strong>
+          <PlusIcon size={34} weight={1.4} />
           <span className="text-[14px]">{saleCopy.vehiclePhoto}</span>
         </button>
       </section>
       <section className="rounded-[14px] bg-white mt-[10px] px-[12px] pt-[17px] pb-[13px]">
         <div className="flex items-center gap-[7px] h-[34px] text-[#31343c]">
-          <span className="text-[23px]">▱</span>
+          <PhotoIcon size={22} />
           <strong className="flex-1 text-[17px] whitespace-nowrap overflow-hidden text-ellipsis">
             {saleCopy.vehicle}
           </strong>
-          <button className="text-[#aeb4c2] text-[24px]" aria-label="차량 변경">
-            ⇄
+          <button className="text-[#aeb4c2]" aria-label="차량 변경">
+            <SwapIcon size={22} />
           </button>
         </div>
         <div className="mt-[10px] px-[9px] py-[5px] rounded-[8px] bg-[#f7f8fc]">
@@ -87,7 +99,9 @@ function SaleScreen({ state, dispatch, onBack }) {
               >
                 {value === "" ? "선택" : value}
               </span>
-              <b className="text-[#aeb4c2] text-[25px] font-normal">›</b>
+              <span className="text-[#aeb4c2]">
+                <ChevronRightIcon size={16} />
+              </span>
             </button>
           ))}
         </div>
@@ -127,8 +141,9 @@ function SaleScreen({ state, dispatch, onBack }) {
           <button className="px-[11px] py-[8px] rounded-[7px] bg-[#f2f4fa] text-[#c2c7d3] text-[15px]">
             {saleCopy.clear}
           </button>
-          <button className="px-[11px] py-[8px] rounded-[7px] bg-[#f2f4fa] text-[#c2c7d3] text-[15px]">
-            ⌖ {saleCopy.location}
+          <button className="flex items-center gap-[3px] px-[11px] py-[8px] rounded-[7px] bg-[#f2f4fa] text-[#c2c7d3] text-[15px]">
+            <PinIcon size={15} />
+            {saleCopy.location}
           </button>
           <span className="text-[#c2c7d3] text-[15px]">
             {info.body.length}/2000

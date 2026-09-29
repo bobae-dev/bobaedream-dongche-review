@@ -1,3 +1,11 @@
+import {
+  CarIcon,
+  CheckIcon,
+  ChevronRightIcon,
+  CloseIcon,
+  PlusIcon,
+} from "../../components/icons.jsx";
+
 /**
  * 리뷰 화면 상단의 차량 카드.
  *
@@ -26,7 +34,7 @@ function ModelCard({ state, dispatch }) {
           className="w-full h-[116px] border-2 border-dashed border-[#d6dae6] flex flex-col items-center justify-center text-[#9ba1b2]"
           onClick={() => dispatch({ type: "OPEN_MODEL_PICKER" })}
         >
-          <strong className="text-[45px] font-light leading-[0.9]">＋</strong>
+          <PlusIcon size={40} weight={1.4} />
           <span className="text-[17px]">차량 추가</span>
         </button>
       </section>
@@ -47,7 +55,7 @@ function ModelCard({ state, dispatch }) {
             </p>
           )}
         </div>
-        <div className="flex-none text-[45px]">🚙</div>
+        <CarIcon size={48} />
       </div>
       <button
         className="w-full min-h-[64px] flex items-center gap-[12px] text-[#9ba1b0] text-left"
@@ -60,7 +68,7 @@ function ModelCard({ state, dispatch }) {
               : "border-[#cfd4df]"
           }`}
         >
-          {state.isOwner ? "✓" : ""}
+          {state.isOwner && <CheckIcon size={13} />}
         </span>
         <strong className="text-[#272a33] text-[20px] whitespace-nowrap">
           차주입니다
@@ -80,7 +88,9 @@ function ModelCard({ state, dispatch }) {
               readOnly
               onClick={() => dispatch({ type: "OPEN_DATE_PICKER" })}
             />
-            <b className="text-[#9da3b2] text-[16px] font-normal">›</b>
+            <span className="text-[#9da3b2]">
+              <ChevronRightIcon size={16} />
+            </span>
           </label>
           <label className="min-h-[60px] flex items-center gap-[7px] text-[#20232b] text-[18px]">
             구매 지역<em className="ml-[2px]">*</em>
@@ -91,7 +101,9 @@ function ModelCard({ state, dispatch }) {
               readOnly
               onClick={() => dispatch({ type: "OPEN_CITY_PICKER" })}
             />
-            <b className="text-[#9da3b2] text-[16px] font-normal">›</b>
+            <span className="text-[#9da3b2]">
+              <ChevronRightIcon size={16} />
+            </span>
           </label>
           <label className="min-h-[60px] flex items-center gap-[7px] text-[#20232b] text-[18px]">
             차량 가격<em className="ml-[2px]">*</em>
@@ -150,8 +162,8 @@ function ModelCard({ state, dispatch }) {
       ) : (
         <div className="px-[10px] py-[15px] bg-[#fff9e8] text-[#474a52] flex justify-between text-[14px] mb-[12px]">
           차주 정보를 입력하면 리뷰의 신뢰도를 높일 수 있어요!{" "}
-          <button aria-label="안내 닫기" className="text-[25px]">
-            ×
+          <button aria-label="안내 닫기" className="text-[#474a52]">
+            <CloseIcon size={16} />
           </button>
         </div>
       )}

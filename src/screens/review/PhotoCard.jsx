@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { CheckIcon, CloseIcon, PlusIcon } from "../../components/icons.jsx";
 
 /**
  * 리뷰 화면의 대표 사진 카드.
@@ -23,15 +24,16 @@ function PhotoCard({ selectedCover, onCoverChange, onRemoveCover }) {
             src={selectedCover.url}
             alt={selectedCover.name}
           />
-          <div className="absolute left-0 right-0 bottom-0 px-[4px] py-[6px] bg-[rgba(0,0,0,0.62)] text-white text-center text-[12px]">
-            ✓ 사진 1장 선택됨
+          <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center gap-[3px] px-[4px] py-[6px] bg-[rgba(0,0,0,0.62)] text-white text-[12px]">
+            <CheckIcon size={12} />
+            사진 1장 선택됨
           </div>
           <button
-            className="absolute top-[3px] right-[3px] w-[25px] h-[25px] rounded-full bg-[rgba(0,0,0,0.6)] text-white text-[19px] leading-[20px]"
+            className="absolute top-[3px] right-[3px] w-[25px] h-[25px] rounded-full bg-[rgba(0,0,0,0.6)] flex items-center justify-center text-white"
             aria-label="사진 삭제"
             onClick={onRemoveCover}
           >
-            ×
+            <CloseIcon size={13} weight={2.6} />
           </button>
         </div>
       ) : (
@@ -39,7 +41,7 @@ function PhotoCard({ selectedCover, onCoverChange, onRemoveCover }) {
           className="w-[102px] h-[120px] border-2 border-dashed border-[#d6dae6] flex flex-col items-center justify-center text-[#9ba1b2]"
           onClick={() => fileInputRef.current?.click()}
         >
-          <strong className="text-[40px] font-light leading-none">＋</strong>
+          <PlusIcon size={36} weight={1.4} />
           <span className="text-[14px]">대표 사진 추가</span>
         </button>
       )}

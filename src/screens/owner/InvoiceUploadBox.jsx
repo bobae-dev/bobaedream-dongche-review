@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
 import { ownerCopy } from "../../data/copy.js";
+import { CloseIcon, PlusIcon } from "../../components/icons.jsx";
 
 /** 영수증 용지 양쪽에 뚫린 구멍 — 위아래로 같은 간격으로 반복한다. */
 const PUNCH_HOLES = Array.from({ length: 7 });
@@ -76,20 +77,20 @@ function InvoiceUploadBox({ receipts, onAdd, onRemove }) {
                 draggable={false}
               />
               <button
-                className="absolute top-[3px] right-[3px] w-[22px] h-[22px] rounded-full bg-[rgba(0,0,0,0.6)] text-white text-[17px] leading-[18px]"
+                className="absolute top-[3px] right-[3px] w-[22px] h-[22px] rounded-full bg-[rgba(0,0,0,0.6)] flex items-center justify-center text-white"
                 aria-label={`${receipt.name} 삭제`}
                 onClick={() => onRemove(receipt.id)}
               >
-                ×
+                <CloseIcon size={12} weight={2.6} />
               </button>
             </div>
           ))}
           <button
-            className="flex-[0_0_120px] h-[150px] rounded-[6px] border border-dashed border-[#e0c88f] bg-[rgba(255,255,255,0.7)] text-[#b9a375] text-[30px] font-light"
+            className="flex-[0_0_120px] h-[150px] rounded-[6px] border border-dashed border-[#e0c88f] bg-[rgba(255,255,255,0.7)] flex items-center justify-center text-[#b9a375]"
             aria-label="영수증 추가"
             onClick={() => fileInputRef.current?.click()}
           >
-            ＋
+            <PlusIcon size={28} weight={1.4} />
           </button>
         </div>
       ) : (
@@ -97,8 +98,8 @@ function InvoiceUploadBox({ receipts, onAdd, onRemove }) {
           className="relative w-full h-full flex flex-col items-center justify-center gap-[10px]"
           onClick={() => fileInputRef.current?.click()}
         >
-          <span className="w-[34px] h-[34px] inline-flex items-center justify-center rounded-full bg-[#1f2129] text-white text-[26px] leading-none font-light">
-            ＋
+          <span className="w-[34px] h-[34px] inline-flex items-center justify-center rounded-full bg-[#1f2129] text-white">
+            <PlusIcon size={22} weight={2.4} />
           </span>
           <strong className="text-[17px] font-normal text-[#4a4d56]">
             {ownerCopy.receiptUpload}
