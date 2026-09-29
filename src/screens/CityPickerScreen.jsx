@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useState } from "react";
 
+import IndexRail from "../components/IndexRail.jsx";
 import { cityPickerCopy } from "../data/copy.js";
 import { cityGroups } from "../data/cities.js";
+import { useGroupIndex } from "../hooks/useGroupIndex.js";
 
 /**
  * 머리글(헤더 42 + 간격 6 + 검색창 32 + 간격 4)이 차지하는 높이.
@@ -19,86 +21,28 @@ const TOP_HEIGHT = 84;
  *   레일: 글자 한 칸 18, 현재 그룹은 지름 16 의 검은 원
  *
  * 스크롤해도 머리글과 현재 그룹 머리글은 위에 붙어 있다(sticky).
- * 오른쪽 레일은 누르거나 끌면 그 그룹으로 이동하고, 스크롤하면 현재 보이는
- * 그룹이 레일에 표시된다. 레일은 머리글 아래 목록 영역의 세로 가운데에 둔다.
+ * 오른쪽 레일(IndexRail)은 누르거나 끌면 그 그룹으로 이동하고, 스크롤하면
+ * 현재 보이는 그룹이 레일에 표시된다(useGroupIndex).
  *
  * 도시를 고르면 SELECT_CITY 가 연 화면(state.cityPickerFrom)의 필드를 채우고
  * 그 화면으로 돌아간다.
  *
- * 이 화면은 페이지(document) 스크롤을 그대로 쓴다. 열 때 맨 위로 올리고,
- * 닫을 때는 연 화면의 스크롤 위치로 되돌린다.
+ * 이 화면은 페이지(document) 스크롤을 그대로 쓴다. 열 때 맨 위로 올리고
+ * 닫을 때 연 화면의 위치로 되돌리는 일은 App 의 useScreenScroll 이 맡는다.
  */
 function CityPickerScreen({ dispatch }) {
   const [query, setQuery] = useState("");
-  const [activeLetter, setActiveLetter] = useState(cityGroups[0][0]);
-  const groupRefs = useRef({});
-  // 연 화면의 스크롤 위치. 첫 렌더 시점 값이어야 하므로 지연 초기화로 한 번만 읽는다.
-  const [returnScrollY] = useState(() => window.scrollY);
-  const restoreFrameRef = useRef(0);
-
   const keyword = query.trim();
-  // 스크롤 Effect 가 이 배열에 의존하므로, 매 렌더 새로 만들지 않게 묶어 둔다.
-  const visibleGroups = useMemo(
-    () =>
-      keyword
-        ? cityGroups
-            .map(([letter, cities]) => [
-              letter,
-              cities.filter((city) => city.includes(keyword)),
-            ])
-            .filter(([, cities]) => cities.length > 0)
-        : cityGroups,
-    [keyword],
-  );
-
-  // 열 때 맨 위로, 닫힐 때 원래 위치로. 되돌리기는 다음 화면이 그려진 뒤여야
-  // 해서 한 프레임 미룬다. StrictMode 가 개발 중 Effect 를 한 번 더 돌릴 때
-  // 그 예약이 남아 있으면 이 화면이 도로 내려가므로 다시 마운트되면 취소한다.
-  useEffect(() => {
-    cancelAnimationFrame(restoreFrameRef.current);
-    window.scrollTo(0, 0);
-    return () => {
-      restoreFrameRef.current = requestAnimationFrame(() =>
-        window.scrollTo(0, returnScrollY),
-      );
-    };
-  }, [returnScrollY]);
-
-  // 스크롤할 때 머리글 바로 아래에 걸친 그룹을 레일에 표시한다.
-  useEffect(() => {
-    function handleScroll() {
-      let current = visibleGroups[0]?.[0];
-      for (const [letter] of visibleGroups) {
-        const element = groupRefs.current[letter];
-        if (element && element.getBoundingClientRect().top <= TOP_HEIGHT + 1) {
-          current = letter;
-        }
-      }
-      if (current) setActiveLetter(current);
-    }
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [visibleGroups]);
-
-  function jumpTo(letter) {
-    const element = groupRefs.current[letter];
-    if (!element) return;
-    window.scrollTo(
-      0,
-      element.getBoundingClientRect().top + window.scrollY - TOP_HEIGHT,
-    );
-    setActiveLetter(letter);
-  }
-
-  // 레일 위에서 손가락을 끌면 지나가는 글자마다 그 그룹으로 이동한다.
-  function handleRailPointer(event) {
-    if (event.type === "pointermove" && event.buttons === 0) return;
-    const letter = document
-      .elementFromPoint(event.clientX, event.clientY)
-      ?.closest("[data-letter]")?.dataset.letter;
-    if (letter && letter !== activeLetter) jumpTo(letter);
-  }
+  const visibleGroups = keyword
+    ? cityGroups
+        .map(([letter, cities]) => [
+          letter,
+          cities.filter((city) => city.includes(keyword)),
+        ])
+        .filter(([, cities]) => cities.length > 0)
+    : cityGroups;
+  const letters = visibleGroups.map(([letter]) => letter);
+  const { activeLetter, groupRef, jumpTo } = useGroupIndex(letters, TOP_HEIGHT);
 
   return (
     <section className="min-h-dvh bg-white">
@@ -140,9 +84,7 @@ function CityPickerScreen({ dispatch }) {
         {visibleGroups.map(([letter, cities]) => (
           <div
             key={letter}
-            ref={(element) => {
-              groupRefs.current[letter] = element;
-            }}
+            ref={groupRef(letter)}
           >
             <h2
               className="sticky z-[2] h-[28px] pl-[16px] flex items-center bg-white text-[14px] font-normal text-[#1f2129]"
@@ -165,40 +107,12 @@ function CityPickerScreen({ dispatch }) {
         ))}
       </main>
 
-      {/* 레일 — 머리글 아래 목록 영역의 세로 가운데보다 10px 위(앱 측정값,
-          아래쪽 여백 20px 로 맞춘다). 앱 프레임(--app-width) 오른쪽 끝에
-          붙도록 바깥 여백만큼 안쪽으로 민다. */}
-      <div
-        className="fixed right-[max(calc((100%-var(--app-width))/2+2px),2px)] bottom-0 z-[4] pb-[20px] flex items-center pointer-events-none"
-        style={{ top: TOP_HEIGHT }}
-      >
-        <nav
-          className="flex flex-col pointer-events-auto touch-none select-none"
-          aria-label="그룹 바로가기"
-          onPointerDown={handleRailPointer}
-          onPointerMove={handleRailPointer}
-        >
-          {visibleGroups.map(([letter]) => (
-            <button
-              key={letter}
-              data-letter={letter}
-              className="w-[17px] h-[18px] flex items-center justify-center"
-              aria-label={`${letter} 그룹으로 이동`}
-              aria-current={letter === activeLetter}
-            >
-              <span
-                className={`w-[16px] h-[16px] flex items-center justify-center rounded-full text-[10px] ${
-                  letter === activeLetter
-                    ? "bg-[#1f2129] text-white"
-                    : "text-[#606370]"
-                }`}
-              >
-                {letter}
-              </span>
-            </button>
-          ))}
-        </nav>
-      </div>
+      <IndexRail
+        letters={letters}
+        activeLetter={activeLetter}
+        onJump={jumpTo}
+        top={TOP_HEIGHT}
+      />
     </section>
   );
 }
