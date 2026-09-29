@@ -2,7 +2,7 @@ import { saleCopy } from "../data/copy.js";
 import SaleFieldSheet from "./sale/SaleFieldSheet.jsx";
 
 /**
- * 판매글 작성 화면 (탭 5번).
+ * 판매글 작성 화면.
  *
  * 다른 작성 화면과 달리 SourceNavigation(탭 바)이 없고 자체 헤더만 쓴다.
  * 그래서 App.jsx 도 이 화면에는 onNavigate 를 넘기지 않는다.

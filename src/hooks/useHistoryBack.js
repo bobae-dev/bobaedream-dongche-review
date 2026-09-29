@@ -23,7 +23,7 @@ import { useEffect, useEffectEvent, useRef } from "react";
  * 그 상태로 두면 뒤로가기를 눌러도 한동안 아무 일이 없는 것처럼 보이므로,
  * 처음 뜰 때 남은 항목만큼 되돌아가 깊이 0 자리에 맞춘다.
  *
- * @param depth   현재 화면 깊이 (state/selectors.js 의 historyDepth)
+ * @param depth   현재 화면 깊이 (state/screens.js 의 historyDepth)
  * @param onBack  뒤로가기 한 단계를 처리하는 함수
  */
 export function useHistoryBack(depth, onBack) {

@@ -2,7 +2,7 @@ import SourceNavigation from "../components/SourceNavigation.jsx";
 import { energyCopy } from "../data/copy.js";
 
 /**
- * 에너지(연비·전비) 작성 화면 (탭 7번).
+ * 에너지(연비·전비) 작성 화면.
  *
  * 구성: 안내 문구 → 사진 카드 → 제목/본문 → 차량 연결 버튼.
  *
@@ -16,7 +16,7 @@ function EnergyScreen({ state, dispatch, onNavigate, onBack }) {
   return (
     <>
       <SourceNavigation
-        selectedIndex={7}
+        screen={state.screen}
         onNavigate={onNavigate}
         onBack={onBack}
       />

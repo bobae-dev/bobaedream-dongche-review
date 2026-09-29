@@ -4,8 +4,7 @@
  * 마크업에서 한국어 문자열을 분리해 두는 곳이다. 나중에 다국어가 필요해지면
  * 이 파일만 교체하면 되도록, 컴포넌트는 리터럴 대신 여기를 참조한다.
  *
- * localizedCopy.navigation 은 상단 탭 순서의 원본이기도 하다.
- * (components/SourceNavigation.jsx 가 이 배열을 그대로 렌더링한다)
+ * 상단 탭 라벨은 화면 연결과 함께 state/screens.js 의 TABS 에 있다.
  *
  * NOTE: 아직 일부 화면에는 이 파일을 거치지 않은 리터럴 문구가 남아 있다.
  *       예) QuestionScreen 의 "질문 내용을 자세히 작성해 주세요"
@@ -17,16 +16,6 @@ export const localizedCopy = {
   overallScore: "종합 점수",
   owner: "차주입니다",
   addCover: "대표 사진 추가",
-  navigation: [
-    "소식",
-    "차량 점수",
-    "질문",
-    "영상",
-    "긴 글",
-    "판매글",
-    "차주가",
-    "에너지",
-  ],
 };
 
 export const newsCopy = {

@@ -41,7 +41,7 @@ function ReviewScreen({
   return (
     <>
       <SourceNavigation
-        selectedIndex={1}
+        screen={state.screen}
         onNavigate={onNavigate}
         onBack={onBack}
       />

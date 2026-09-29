@@ -1,57 +1,43 @@
+import { parentScreen } from "./screens.js";
+
 /**
  * 앱 전체의 단일 리듀서.
  *
  * 액션은 크게 세 갈래다.
- *   1) OPEN_* / BACK        : 화면 전환. screen 키만 바꾼다.
+ *   1) OPEN_* / BACK        : 화면 전환. 탭 화면은 OPEN_SCREEN 하나로 연다.
  *   2) SELECT_* / TOGGLE_*  : 값 선택 + 화면 복귀를 함께 처리한다.
  *   3) SET_*_FIELD          : 각 화면 폼의 필드 수정.
  *                             action.field 로 키를 받는 공통 패턴이라,
  *                             화면이 늘어도 case 하나만 추가하면 된다.
  *
- * BACK 은 'review' 로 돌아간다 — 히스토리 스택이 없는 단순 구조다.
- * 예외는 지역 선택 화면으로, 연 화면(cityPickerFrom)으로 돌아간다.
+ * BACK 은 부모 화면(state/screens.js 의 parentScreen)으로 돌아간다.
  * HISTORY_BACK 은 브라우저 뒤로가기용이다. 가장 위에 떠 있는 것 하나만
- * 닫는다(시트·모달 → 화면 순). selectors.js 의 historyDepth 를 1 줄인다.
+ * 닫는다(시트·모달 → 화면 순). screens.js 의 historyDepth 를 1 줄인다.
  */
 export function reduce(state, action) {
   switch (action.type) {
     case "OPEN_MODEL_PICKER":
       return { ...state, screen: "brand-picker" };
-    case "OPEN_NEWS":
-      return { ...state, screen: "news" };
-    case "OPEN_QUESTION":
-      return { ...state, screen: "question" };
-    case "OPEN_LONG_POST":
-      return { ...state, screen: "long-post" };
-    case "OPEN_SALE":
-      return { ...state, screen: "sale" };
-    case "OPEN_OWNER":
-      return { ...state, screen: "owner" };
-    case "OPEN_ENERGY":
-      return { ...state, screen: "energy" };
-    case "OPEN_REVIEW":
-      return { ...state, screen: "review" };
+    case "OPEN_SCREEN":
+      return { ...state, screen: action.screen };
     case "OPEN_CITY_PICKER":
       return {
         ...state,
         screen: "city-picker",
         cityPickerFrom: action.from ?? "review",
       };
-    case "BACK":
-      if (state.screen === "city-picker") {
-        return { ...state, screen: state.cityPickerFrom };
-      }
-      return { ...state, screen: "review" };
-    case "HISTORY_BACK":
+    case "BACK": {
+      const parent = parentScreen(state);
+      return parent ? { ...state, screen: parent } : state;
+    }
+    case "HISTORY_BACK": {
       if (state.saleSheet) return { ...state, saleSheet: null };
       if (state.datePicker.open) {
         return { ...state, datePicker: { ...state.datePicker, open: false } };
       }
-      if (state.screen === "city-picker") {
-        return { ...state, screen: state.cityPickerFrom };
-      }
-      if (state.screen !== "review") return { ...state, screen: "review" };
-      return state;
+      const parent = parentScreen(state);
+      return parent ? { ...state, screen: parent } : state;
+    }
     case "SELECT_MODEL":
       return {
         ...state,
@@ -73,19 +59,14 @@ export function reduce(state, action) {
       };
     case "TOGGLE_OWNER":
       return { ...state, isOwner: !state.isOwner };
-    case "OPEN_DATE_PICKER":
+    // 이미 고른 값("2026년 9월")이 있으면 그 위치에서 휠을 연다.
+    case "OPEN_DATE_PICKER": {
+      const [year, month] = state.ownerInfo.deliveryTime.split(" ");
       return {
         ...state,
-        datePicker: {
-          open: true,
-          year: state.ownerInfo.deliveryTime
-            ? Number(state.ownerInfo.deliveryTime.slice(0, 4))
-            : 2026,
-          month: state.ownerInfo.deliveryTime
-            ? Number(state.ownerInfo.deliveryTime.match(/(\d+)월/)?.[1])
-            : 9,
-        },
+        datePicker: { open: true, year: year || "2026년", month: month || "9월" },
       };
+    }
     case "SET_DATE_PART":
       return {
         ...state,
@@ -99,7 +80,7 @@ export function reduce(state, action) {
         datePicker: { ...state.datePicker, open: false },
         ownerInfo: {
           ...state.ownerInfo,
-          deliveryTime: `${state.datePicker.year}년 ${state.datePicker.month}월`,
+          deliveryTime: `${state.datePicker.year} ${state.datePicker.month}`,
         },
       };
     case "SET_OWNER_FIELD":

@@ -3,7 +3,7 @@ import { ownerCopy } from "../data/copy.js";
 import InvoiceUploadBox from "./owner/InvoiceUploadBox.jsx";
 
 /**
- * 차주가 화면 (탭 6번) — 차주 인증 및 구매 정보 등록.
+ * 차주가 화면 — 차주 인증 및 구매 정보 등록.
  *
  * 구성: 보상 안내(+영수증 업로드) → 구매 정보 → 비고 → 기타 정보.
  *
@@ -53,7 +53,7 @@ function OwnerScreen({
   return (
     <>
       <SourceNavigation
-        selectedIndex={6}
+        screen={state.screen}
         onNavigate={onNavigate}
         onBack={onBack}
       />

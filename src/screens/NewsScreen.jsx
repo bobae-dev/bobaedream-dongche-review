@@ -11,7 +11,7 @@ import {
 } from "../hooks/useDragScroll.js";
 
 /**
- * 소식 작성 화면 (탭 0번).
+ * 소식 작성 화면.
  *
  * 구성: 탭 바 → 이미지 도구 카드 → 제목/본문 → 체크인 장소 → 주제 추가 → 푸터.
  *
@@ -51,7 +51,7 @@ function NewsScreen({
   return (
     <>
       <SourceNavigation
-        selectedIndex={0}
+        screen={state.screen}
         onNavigate={onNavigate}
         onBack={onBack}
       />

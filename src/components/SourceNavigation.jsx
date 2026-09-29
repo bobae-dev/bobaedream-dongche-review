@@ -1,28 +1,29 @@
 import { useEffect } from "react";
 
-import { localizedCopy } from "../data/copy.js";
 import {
   DRAG_SCROLLER_CLASS,
   useDragScroll,
 } from "../hooks/useDragScroll.js";
+import { TABS } from "../state/screens.js";
 
 /**
  * 화면 상단에 고정되는 가로 스크롤 탭 바.
  *
- * 탭 목록은 data/copy.js 의 localizedCopy.navigation 이 원본이고,
- * 어느 탭이 선택 상태인지는 각 화면이 selectedIndex 로 알려준다.
+ * 탭 목록은 state/screens.js 의 TABS 가 원본이고, 현재 화면(screen)과
+ * 같은 화면을 여는 탭이 선택 상태가 된다. 화면이 없는 탭(screen: null)은
+ * 눌러도 아무 일이 없다.
  *
  * 탭이 화면보다 길어서 가로로 넘치므로 끌어서 스크롤할 수 있게 한다.
  * 그 동작은 useDragScroll 훅이 맡는다 — 드래그 끝의 의도치 않은 클릭을
  * 걸러내는 일까지 포함해서다.
  *
- * selectedIndex 가 바뀌면 해당 탭을 가로 중앙으로 스크롤해 준다.
+ * 선택 탭이 바뀌면 그 탭을 가로 중앙으로 스크롤해 준다.
  *
- * @param selectedIndex  localizedCopy.navigation 기준 현재 탭 번호
- * @param onNavigate     탭을 눌렀을 때 (탭 라벨 문자열)
+ * @param screen      현재 화면 (state.screen)
+ * @param onNavigate  탭을 눌렀을 때 (열 화면 키)
  * @param onBack         좌측 '‹' 버튼
  */
-function SourceNavigation({ selectedIndex, onNavigate, onBack }) {
+function SourceNavigation({ screen, onNavigate, onBack }) {
   const {
     ref: tabsRef,
     onMouseDown: handleTabsMouseDown,
@@ -36,11 +37,11 @@ function SourceNavigation({ selectedIndex, onNavigate, onBack }) {
       block: "nearest",
       behavior: "auto",
     });
-  }, [selectedIndex, tabsRef]);
+  }, [screen, tabsRef]);
 
-  function handleTabClick(item) {
+  function handleTabClick(tab) {
     if (shouldIgnoreClick()) return;
-    onNavigate(item);
+    if (tab.screen) onNavigate(tab.screen);
   }
 
   return (
@@ -64,18 +65,18 @@ function SourceNavigation({ selectedIndex, onNavigate, onBack }) {
             : "cursor-grab scroll-smooth"
         }`}
       >
-        {localizedCopy.navigation.map((item, index) => (
+        {TABS.map((tab) => (
           <button
-            key={item}
-            data-selected={index === selectedIndex}
+            key={tab.label}
+            data-selected={tab.screen === screen}
             className={`relative flex-none h-[58px] px-[6px] text-[12px] whitespace-nowrap ${
-              index === selectedIndex
+              tab.screen === screen
                 ? "text-[#20242c] font-bold after:content-[''] after:absolute after:left-[28%] after:right-[28%] after:bottom-[7px] after:h-[3px] after:rounded-[3px] after:bg-[#ffca28]"
                 : "text-[#747b8c]"
             }`}
-            onClick={() => handleTabClick(item)}
+            onClick={() => handleTabClick(tab)}
           >
-            {item}
+            {tab.label}
           </button>
         ))}
       </div>

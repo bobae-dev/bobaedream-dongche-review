@@ -5,9 +5,16 @@
  * 소식 / 질문 / 긴 글 화면이 공유한다. (원래 이름은 NewsFooter 였으나
  * 소식 전용이 아니라서 ComposerFooter 로 바꿨다)
  *
+ * 차량 줄은 모든 화면이 같고 도구 줄만 화면마다 다르다. 도구 줄은
+ * children 으로 받고, 주지 않으면 소식·질문 화면의 기본 3개(표정·통계·위치)를
+ * 그린다. 긴 글 화면은 4개짜리 줄을 직접 넘긴다.
+ *
+ * 아이폰 홈 인디케이터에 가리지 않도록 아래에 safe-area 만큼 여백을 둔다.
+ *
  * @param vehicleLabel  푸터에 표시할 차량 이름
+ * @param children      도구 버튼 줄 (<nav>). 없으면 기본 도구 줄.
  */
-function ComposerFooter({ vehicleLabel }) {
+function ComposerFooter({ vehicleLabel, children }) {
   return (
     <footer className="fixed bottom-0 left-1/2 z-[4] w-[min(100%,var(--app-width))] -translate-x-1/2 pb-[env(safe-area-inset-bottom)] bg-white shadow-[0_-2px_12px_rgba(32,39,63,0.05)]">
       <div className="h-[42px] flex items-center gap-[9px] px-[16px] text-[#20232b]">
@@ -23,30 +30,37 @@ function ComposerFooter({ vehicleLabel }) {
           ×
         </button>
       </div>
-      <nav
-        className="h-[72px] flex items-center gap-[30px] px-[19px] text-[#6c7282]"
-        aria-label="하단 메뉴"
-      >
-        <button
-          className="text-inherit text-[32px] leading-none"
-          aria-label="표정"
-        >
-          ☺
-        </button>
-        <button
-          className="text-inherit text-[32px] leading-none"
-          aria-label="통계"
-        >
-          ▥
-        </button>
-        <button
-          className="text-inherit text-[32px] leading-none"
-          aria-label="위치"
-        >
-          ⌖
-        </button>
-      </nav>
+      {children ?? <DefaultTools />}
     </footer>
+  );
+}
+
+/** 소식·질문 화면의 도구 줄. */
+function DefaultTools() {
+  return (
+    <nav
+      className="h-[72px] flex items-center gap-[30px] px-[19px] text-[#6c7282]"
+      aria-label="하단 메뉴"
+    >
+      <button
+        className="text-inherit text-[32px] leading-none"
+        aria-label="표정"
+      >
+        ☺
+      </button>
+      <button
+        className="text-inherit text-[32px] leading-none"
+        aria-label="통계"
+      >
+        ▥
+      </button>
+      <button
+        className="text-inherit text-[32px] leading-none"
+        aria-label="위치"
+      >
+        ⌖
+      </button>
+    </nav>
   );
 }
 

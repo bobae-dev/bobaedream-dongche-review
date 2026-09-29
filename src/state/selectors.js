@@ -42,27 +42,3 @@ export function ratingDescription(category, rating) {
   );
   return ratingLabels[category][index];
 }
-
-/**
- * 현재 화면이 리뷰 화면(뿌리)에서 몇 단계 들어와 있는지.
- * hooks/useHistoryBack.js 가 이 값만큼 브라우저 히스토리 항목을 쌓아 둔다.
- *
- *   리뷰 화면                         0
- *   그 밖의 화면(탭·차량/지역 선택)   1  — 탭끼리 옮겨도 늘지 않는다.
- *   차주가 화면에서 연 지역 선택      2  — 차주가(1) 위에 한 단계 더
- *   위에 시트·모달이 떠 있으면       +1
- *
- * 탭 전환이 단계를 늘리지 않는 건 앱 안의 ‹ 버튼과 맞추기 위해서다.
- * 어느 탭에서든 ‹ 는 리뷰 화면으로 돌아간다(reducer 의 BACK).
- * reducer 의 HISTORY_BACK 은 이 값을 정확히 1 줄이는 동작이어야 한다.
- */
-export function historyDepth(state) {
-  const screenDepth =
-    state.screen === "review"
-      ? 0
-      : state.screen === "city-picker" && state.cityPickerFrom === "owner"
-        ? 2
-        : 1;
-  const overlayDepth = state.datePicker.open || state.saleSheet ? 1 : 0;
-  return screenDepth + overlayDepth;
-}

@@ -15,7 +15,7 @@ import { useMediaPicker } from "./hooks/useMediaPicker.js";
 import { useScreenScroll } from "./hooks/useScreenScroll.js";
 import { initialState } from "./state/initialState.js";
 import { reduce } from "./state/reducer.js";
-import { historyDepth } from "./state/selectors.js";
+import { historyDepth } from "./state/screens.js";
 
 /**
  * 앱의 루트 컴포넌트 — 상태 소유와 화면 라우팅을 맡는다.
@@ -35,9 +35,8 @@ import { historyDepth } from "./state/selectors.js";
  *   3) activeRatingPopup : 별점 말풍선. 어느 별의 후보를 띄우고 있는지만
  *                          담는 일시적 UI 상태라 역시 리듀서 바깥에 둔다.
  *
- * TODO: navigate() 의 라벨→액션 매핑과 아래 화면 분기가 같은 화면 목록을
- *       두 번 적고 있다. 화면이 늘 때마다 두 곳을 함께 고쳐야 하므로
- *       screens/registry.js 같은 단일 목록으로 합치는 편이 낫다.
+ * 탭 목록과 화면 간 부모 관계(뒤로가기 규칙)는 state/screens.js 에 있다.
+ * 화면을 추가하면 거기와 아래 분기 두 곳을 고친다.
  */
 export default function App() {
   const [state, dispatch] = useReducer(reduce, initialState);
@@ -76,32 +75,9 @@ export default function App() {
     dispatch({ type: "BACK" });
   }
 
-  function navigate(item) {
-    switch (item) {
-      case "소식":
-        dispatch({ type: "OPEN_NEWS" });
-        break;
-      case "차량 점수":
-        dispatch({ type: "OPEN_REVIEW" });
-        break;
-      case "질문":
-        dispatch({ type: "OPEN_QUESTION" });
-        break;
-      case "긴 글":
-        dispatch({ type: "OPEN_LONG_POST" });
-        break;
-      case "판매글":
-        dispatch({ type: "OPEN_SALE" });
-        break;
-      case "차주가":
-        dispatch({ type: "OPEN_OWNER" });
-        break;
-      case "에너지":
-        dispatch({ type: "OPEN_ENERGY" });
-        break;
-      default:
-        break;
-    }
+  // 탭 바에서 탭을 눌렀을 때. 화면이 없는 탭(영상)은 SourceNavigation 이 거른다.
+  function navigate(screen) {
+    dispatch({ type: "OPEN_SCREEN", screen });
   }
 
   switch (state.screen) {

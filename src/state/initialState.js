@@ -27,7 +27,8 @@ export const initialState = {
     totalPrice: "",
     mileage: "",
   },
-  datePicker: { open: false, year: 2026, month: 9 },
+  // year / month 는 휠 항목 문자열 그대로다 ("2026년", "9월").
+  datePicker: { open: false, year: "2026년", month: "9월" },
   cityPickerFrom: "review",
   ratings: Object.fromEntries(categories.map((category) => [category, 0])),
   comment: "",

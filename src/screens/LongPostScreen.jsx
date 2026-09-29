@@ -1,4 +1,5 @@
 import ChipRow from "../components/ChipRow.jsx";
+import ComposerFooter from "../components/ComposerFooter.jsx";
 import SourceNavigation from "../components/SourceNavigation.jsx";
 import { longPostCopy } from "../data/copy.js";
 import { SHARED_TOPICS } from "../data/topics.js";
@@ -7,21 +8,18 @@ import { SHARED_TOPICS } from "../data/topics.js";
 const LONG_POST_ICONS = { 표정: "☺", 사진: "▱", 가격: "￥" };
 
 /**
- * 긴 글 작성 화면 (탭 4번).
+ * 긴 글 작성 화면.
  *
  * 첨부 도구 카드 없이 제목/본문 카드로 바로 시작한다.
  *
- * NOTE: 이 화면만 공용 ComposerFooter 를 쓰지 않고 푸터를 직접 그린다.
- *       상단 차량 줄은 완전히 같고 하단 버튼 줄만 다르다
- *       (고정 3개 → longPostCopy.bottomActions 4개).
- *       ComposerFooter 가 하단 버튼을 children/props 로 받게 바꾸면
- *       통합할 수 있는 중복이다.
+ * 하단 푸터는 공용 ComposerFooter 를 쓰되, 도구 줄만 이 화면의
+ * 4개(longPostCopy.bottomActions)로 바꿔 넘긴다.
  */
 function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
   return (
     <>
       <SourceNavigation
-        selectedIndex={4}
+        screen={state.screen}
         onNavigate={onNavigate}
         onBack={onBack}
       />
@@ -67,20 +65,7 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
           items={SHARED_TOPICS}
         />
       </main>
-      <footer className="fixed bottom-0 left-1/2 z-[4] w-[min(100%,var(--app-width))] -translate-x-1/2 pb-[env(safe-area-inset-bottom)] bg-white shadow-[0_-2px_12px_rgba(32,39,63,0.05)]">
-        <div className="h-[42px] flex items-center gap-[9px] px-[16px] text-[#20232b]">
-          <span className="w-[20px] h-[20px] inline-flex items-center justify-center rounded-full bg-[#20232b] text-white text-[12px] font-bold">
-            C
-          </span>
-          <strong className="text-[17px]">{longPostCopy.vehicle}</strong>
-          <i className="inline-block w-px h-[17px] bg-[#d8dce6]"></i>
-          <button
-            className="text-[#c2c7d3] text-[24px] leading-none"
-            aria-label="차량 닫기"
-          >
-            ×
-          </button>
-        </div>
+      <ComposerFooter vehicleLabel={longPostCopy.vehicle}>
         <nav
           className="h-[72px] flex items-center gap-[27px] px-[19px] text-[#6c7282]"
           aria-label="하단 메뉴"
@@ -95,7 +80,7 @@ function LongPostScreen({ state, dispatch, onNavigate, onBack }) {
             </button>
           ))}
         </nav>
-      </footer>
+      </ComposerFooter>
     </>
   );
 }

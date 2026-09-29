@@ -11,7 +11,7 @@ import {
 } from "../hooks/useDragScroll.js";
 
 /**
- * 질문 작성 화면 (탭 2번).
+ * 질문 작성 화면.
  *
  * 소식 화면과 뼈대가 거의 같고, 첨부가 사진/영상 두 갈래이며 본문 아래에
  * 글자 수 카운터(2000자)가 붙는다는 점이 다르다.
@@ -54,7 +54,7 @@ function QuestionScreen({
   return (
     <>
       <SourceNavigation
-        selectedIndex={2}
+        screen={state.screen}
         onNavigate={onNavigate}
         onBack={onBack}
       />
