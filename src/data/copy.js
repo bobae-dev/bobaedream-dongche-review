@@ -95,6 +95,13 @@ export const ownerCopy = {
   priceUnit: "만원",
 };
 
+/** 지역 선택 화면. 실제 앱의 '选择城市' · '搜索城市' 를 옮긴 것. */
+export const cityPickerCopy = {
+  title: "도시 선택",
+  searchPlaceholder: "도시 검색",
+  noResult: "검색 결과가 없어요",
+};
+
 export const energyCopy = {
   tab: "에너지",
   notice: "차량을 선택하면 아래에 연비·전비 입력란이 자동으로 표시돼요",

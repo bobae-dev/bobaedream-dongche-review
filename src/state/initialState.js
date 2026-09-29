@@ -11,6 +11,9 @@ import { categories } from "../data/categories.js";
  * - model      : 선택한 차량. null 이면 리뷰 화면이 '차량 추가' 상태로 그려진다.
  * - ownerInfo  : 리뷰 화면 안의 차주 정보 (차주가 화면의 ownerPage 와는 별개)
  * - datePicker : 인도 시기 모달의 열림 여부 + 현재 선택 중인 연/월
+ * - cityPickerFrom : 지역 선택 화면을 연 화면("review" | "owner").
+ *                    고르거나 뒤로 가면 이 화면으로 돌아가고, 고른 값도
+ *                    이 화면의 필드(ownerInfo.city / ownerPage.city)에 들어간다.
  * - ratings    : 평가 항목별 점수(0~5, 0.5 단위)
  */
 export const initialState = {
@@ -25,6 +28,7 @@ export const initialState = {
     mileage: "",
   },
   datePicker: { open: false, year: 2026, month: 9 },
+  cityPickerFrom: "review",
   ratings: Object.fromEntries(categories.map((category) => [category, 0])),
   comment: "",
   brandQuery: "",
@@ -48,7 +52,8 @@ export const initialState = {
     barePrice: "",
     totalPrice: "",
     purchaseTime: "",
-    city: "양천구",
+    // 실제 앱은 현재 위치로 채워 두지만, 여기서는 목록에서 고르게 비워 둔다.
+    city: "",
     note: "",
     // '기타 정보' 안의 항목들. 이 묶음은 접었다 펼 수 있고, 기본은 펼침이다.
     payment: "할부",

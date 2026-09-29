@@ -36,6 +36,12 @@ export function useHistoryBack(depth, onBack) {
   const back = useEffectEvent(() => onBack());
 
   useEffect(() => {
+    // 히스토리 이동 때 브라우저가 저장해 둔 스크롤 위치로 되돌리는 동작을 끈다.
+    // 우리 항목은 URL 이 같아 브라우저가 저장한 위치가 화면과 맞지 않고,
+    // 화면이 직접 되돌린 위치(예: 지역 선택을 닫을 때)를 history.go 가 뒤늦게
+    // 덮어쓴다. 화면 전환 시 스크롤은 각 화면이 직접 관리한다.
+    window.history.scrollRestoration = "manual";
+
     const leftover = window.history.state?.appDepth ?? 0;
     if (leftover > 0 && !restoredRef.current) {
       restoredRef.current = true;

@@ -9,7 +9,9 @@ import InvoiceUploadBox from "./owner/InvoiceUploadBox.jsx";
  *
  * 구매 정보 5줄은 두 종류로 나뉜다. 실제 앱이 그렇게 구분한다.
  *   선택형(select) : 브랜드·차종 · 구매 시기 · 구매 지역 — 오른쪽에 '›' 가 붙고
- *                    값이 없으면 회색 안내 문구를 보여 준다.
+ *                    값이 없으면 회색 안내 문구를 보여 준다. 누르는 줄이라
+ *                    button 으로 그린다. 지금은 구매 지역만 선택 화면
+ *                    (CityPickerScreen)이 연결되어 있고 나머지는 표시만 한다.
  *   입력형(input)  : 차량 가격 · 실구매 가격 — 직접 타이핑하고 '만원' 단위가
  *                    뒤에 붙는다. '›' 는 없다.
  *
@@ -37,7 +39,12 @@ function OwnerScreen({
     { label: ownerCopy.barePrice, field: "barePrice", kind: "input" },
     { label: ownerCopy.totalPrice, field: "totalPrice", kind: "input" },
     { label: ownerCopy.purchaseTime, field: "purchaseTime", kind: "select" },
-    { label: ownerCopy.location, field: "city", kind: "select" },
+    {
+      label: ownerCopy.location,
+      field: "city",
+      kind: "select",
+      onSelect: () => dispatch({ type: "OPEN_CITY_PICKER", from: "owner" }),
+    },
   ];
 
   const setField = (field, value) =>
@@ -97,42 +104,49 @@ function OwnerScreen({
         </section>
 
         <section className="rounded-[14px] bg-white mt-[10px] px-[14px] py-[13px]">
-          {fields.map(({ label, field, kind }) => (
-            <label
-              className="min-h-[57px] flex items-center gap-[5px]"
-              key={field}
-            >
+          {fields.map(({ label, field, kind, onSelect }) => {
+            const fieldLabel = (
               <strong className="flex-[0_0_112px] text-[#242731] text-[17px]">
                 {label}
                 <em className="ml-[3px]">*</em>
               </strong>
-              {kind === "select" ? (
-                <>
-                  <span
-                    className={`flex-1 min-w-0 text-right whitespace-nowrap overflow-hidden text-ellipsis text-[17px] ${
-                      info[field] ? "text-[#2a2d36]" : "text-[#c8ccd7]"
-                    }`}
-                  >
-                    {info[field] || ownerCopy.selectHint}
-                  </span>
-                  <b className="text-[#aeb4c2] text-[25px] font-normal">›</b>
-                </>
-              ) : (
-                <>
-                  <input
-                    className="flex-1 min-w-0 border-0 outline-none text-[#2a2d36] text-[16px] text-right placeholder:text-[#c8ccd7]"
-                    value={info[field]}
-                    placeholder={ownerCopy.priceHint}
-                    inputMode="decimal"
-                    onChange={(e) => setField(field, e.target.value)}
-                  />
-                  <span className="text-[#9da3b2] text-[16px]">
-                    {ownerCopy.priceUnit}
-                  </span>
-                </>
-              )}
-            </label>
-          ))}
+            );
+            return kind === "select" ? (
+              <button
+                type="button"
+                className="w-full min-h-[57px] flex items-center gap-[5px] text-left"
+                key={field}
+                onClick={onSelect}
+              >
+                {fieldLabel}
+                <span
+                  className={`flex-1 min-w-0 text-right whitespace-nowrap overflow-hidden text-ellipsis text-[17px] ${
+                    info[field] ? "text-[#2a2d36]" : "text-[#c8ccd7]"
+                  }`}
+                >
+                  {info[field] || ownerCopy.selectHint}
+                </span>
+                <b className="text-[#aeb4c2] text-[25px] font-normal">›</b>
+              </button>
+            ) : (
+              <label
+                className="min-h-[57px] flex items-center gap-[5px]"
+                key={field}
+              >
+                {fieldLabel}
+                <input
+                  className="flex-1 min-w-0 border-0 outline-none text-[#2a2d36] text-[16px] text-right placeholder:text-[#c8ccd7]"
+                  value={info[field]}
+                  placeholder={ownerCopy.priceHint}
+                  inputMode="decimal"
+                  onChange={(e) => setField(field, e.target.value)}
+                />
+                <span className="text-[#9da3b2] text-[16px]">
+                  {ownerCopy.priceUnit}
+                </span>
+              </label>
+            );
+          })}
         </section>
 
         <section className="rounded-[14px] bg-white mt-[10px] px-[14px] pt-[17px] pb-[13px] min-h-[170px]">

@@ -8,7 +8,8 @@
  *                             action.field 로 키를 받는 공통 패턴이라,
  *                             화면이 늘어도 case 하나만 추가하면 된다.
  *
- * BACK 은 항상 'review' 로 돌아간다 — 히스토리 스택이 없는 단순 구조다.
+ * BACK 은 'review' 로 돌아간다 — 히스토리 스택이 없는 단순 구조다.
+ * 예외는 지역 선택 화면으로, 연 화면(cityPickerFrom)으로 돌아간다.
  * HISTORY_BACK 은 브라우저 뒤로가기용이다. 가장 위에 떠 있는 것 하나만
  * 닫는다(시트·모달 → 화면 순). selectors.js 의 historyDepth 를 1 줄인다.
  */
@@ -31,13 +32,23 @@ export function reduce(state, action) {
     case "OPEN_REVIEW":
       return { ...state, screen: "review" };
     case "OPEN_CITY_PICKER":
-      return { ...state, screen: "city-picker" };
+      return {
+        ...state,
+        screen: "city-picker",
+        cityPickerFrom: action.from ?? "review",
+      };
     case "BACK":
+      if (state.screen === "city-picker") {
+        return { ...state, screen: state.cityPickerFrom };
+      }
       return { ...state, screen: "review" };
     case "HISTORY_BACK":
       if (state.saleSheet) return { ...state, saleSheet: null };
       if (state.datePicker.open) {
         return { ...state, datePicker: { ...state.datePicker, open: false } };
+      }
+      if (state.screen === "city-picker") {
+        return { ...state, screen: state.cityPickerFrom };
       }
       if (state.screen !== "review") return { ...state, screen: "review" };
       return state;
@@ -48,6 +59,13 @@ export function reduce(state, action) {
         model: { name: action.model, trim: action.trim },
       };
     case "SELECT_CITY":
+      if (state.cityPickerFrom === "owner") {
+        return {
+          ...state,
+          screen: "owner",
+          ownerPage: { ...state.ownerPage, city: action.value },
+        };
+      }
       return {
         ...state,
         screen: "review",
